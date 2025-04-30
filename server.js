@@ -1,24 +1,40 @@
-const http = require('http');
-const url = require('url');
+const express = require('express');
+const app = express();
+const PORT = 2089;
 
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next(); // Pass control to the next handler
+  });
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
+app.use(express.json()); // parse JSON body
+app.use(express.urlencoded({ extended: true })); // parse URL-encoded form data
 
-  if (parsedUrl.pathname === '/') {
-    res.end('<h1>Welcome to the Home Page</h1>');
-  } else if (parsedUrl.pathname === '/about') {
-    res.end('<h1>About Us</h1><p>This is the about page.</p>');
-  } else if (parsedUrl.pathname === '/contact') {
-    res.end('<h1>Contact</h1><p>Email: example@example.com</p>');
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/html' });
-    res.end('<h1>404 Not Found</h1>');
-  }
+const logAbout = (req, res, next) => {
+    console.log('Profile route hit!');
+    next();
+  };
+
+app.get('/profile', logAbout, (req, res) => {
+res.send('Profile page with route-specific middleware');
 });
 
-const PORT = 2089;
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+// Root route
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});
+
+// About route
+app.get('/about', (req, res) => {
+  res.send('About page via Express');
+});
+
+// Catch-all for undefined routes
+app.use((req, res) => {
+  res.status(404).send('404 - Page Not Found');
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Express server running at http://localhost:${PORT}`);
 });
