@@ -13,6 +13,9 @@ app.use('/user', userRoutes);
 const productsRoutes = require('./routes/productsRoutes');
 app.use('/products', productsRoutes);
 
+const blogRoutes = require('./routes/blogRoutes');
+app.use('/blog', blogRoutes);
+
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next(); // Pass control to the next handler
