@@ -17,9 +17,9 @@ const logAbout = (req, res, next) => {
     next();
   };
 
-app.get('/profile', logAbout, (req, res) => {
-res.send('Profile page with route-specific middleware');
-});
+  app.get('/profile', logAbout, (req, res) => {
+    res.send('Profile page with route-specific middleware');
+  });
 
 // Root route
 app.get('/', (req, res) => {
