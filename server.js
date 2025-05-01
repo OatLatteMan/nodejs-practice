@@ -5,8 +5,13 @@ const path = require('path');
 
 app.use(express.static('public'));
 
+// User routes
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', userRoutes);
+
+// Products routes
+const productsRoutes = require('./routes/productsRoutes');
+app.use('/products', productsRoutes);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
