@@ -13,8 +13,13 @@ app.use('/user', userRoutes);
 const productsRoutes = require('./routes/productsRoutes');
 app.use('/products', productsRoutes);
 
+// blog routes
 const blogRoutes = require('./routes/blogRoutes');
 app.use('/blog', blogRoutes);
+
+// API routes
+const apiRoutes = require('./routes/apiRoutes');
+app.use('/api', apiRoutes);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
