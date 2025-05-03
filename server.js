@@ -14,6 +14,11 @@ app.get('/products', (req, res) => {
 const productRoutes = require('./routes/productsRoutes');
 app.use('/api/products', productRoutes);
 
+// manage products route
+app.get('/manage', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'manage-products.html'));
+});
+
 // API routes
 const apiRoutes = require('./routes/apiRoutes');
 app.use('/api', apiRoutes);

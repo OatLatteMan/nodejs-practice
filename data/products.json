@@ -1,22 +1,22 @@
 [
-  {
-    "id": 1,
-    "name": "Laptop",
-    "price": 1299
-  },
-  {
-    "id": 2,
-    "name": "Smartphone",
-    "price": 799
-  },
-  {
-    "id": 3,
-    "name": "Keyboard",
-    "price": 99
-  },
-  {
-    "id": 1746311665231,
-    "name": "Cake",
-    "price": "120"
-  }
+    {
+        "id": 1,
+        "name": "Laptop",
+        "price": 1299
+    },
+    {
+        "id": 2,
+        "name": "Smartphone",
+        "price": 799
+    },
+    {
+        "id": 3,
+        "name": "Keyboard",
+        "price": 99
+    },
+    {
+        "id": 4,
+        "name": "Choco cake",
+        "price": "99"
+    }
 ]
