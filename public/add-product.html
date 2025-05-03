@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Product</title>
+</head>
+
+<body>
+    <h1>Add a Product</h1>
+    <form id="productForm">
+        <label>Name: <input type="text" name="name" required></label><br><br>
+        <label>Price: <input type="number" name="price" required></label><br><br>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <script>
+        document.getElementById('productForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const name = form.name.value;
+            const price = form.price.value;
+
+            const res = await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price })
+            });
+
+            const result = await res.json();
+            alert('Product added: ' + JSON.stringify(result));
+            form.reset();
+        });
+    </script>
+</body>
+
+</html>

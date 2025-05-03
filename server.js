@@ -1,32 +1,36 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = 2089;
-const path = require('path');
 
-app.use(express.static('public'));
+app.use(express.json()); // parse JSON body
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Products routes
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'add-product.html'));
+});
+
+const productRoutes = require('./routes/productsRoutes');
+app.use('/api/products', productRoutes);
+
+// API routes
+const apiRoutes = require('./routes/apiRoutes');
+app.use('/api', apiRoutes);
 
 // User routes
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', userRoutes);
 
-// Products routes
-const productsRoutes = require('./routes/productsRoutes');
-app.use('/products', productsRoutes);
-
 // blog routes
 const blogRoutes = require('./routes/blogRoutes');
 app.use('/blog', blogRoutes);
-
-// API routes
-const apiRoutes = require('./routes/apiRoutes');
-app.use('/api', apiRoutes);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next(); // Pass control to the next handler
 });
 
-app.use(express.json()); // parse JSON body
 app.use(express.urlencoded({ extended: true })); // parse URL-encoded form data
 
 const logAbout = (req, res, next) => {
