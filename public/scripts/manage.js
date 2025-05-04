@@ -2,6 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const productList = document.getElementById('product-list');
     const messageDiv = document.getElementById('message');
 
+    document.getElementById('add-button').addEventListener('click', async () => {
+        const name = document.getElementById('add-name').value.trim();
+        const price = document.getElementById('add-price').value;
+
+        if (!name || !price) {
+            alert('Both name and price are required.');
+            return;
+        }
+
+        const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, price })
+        });
+
+        if (res.ok) {
+            document.getElementById('message').textContent = 'Product added successfully!';
+            document.getElementById('add-name').value = '';
+            document.getElementById('add-price').value = '';
+            loadProducts(); // Refresh list
+            setTimeout(() => {
+                document.getElementById('message').textContent = '';
+            }, 3000);
+        } else {
+            const error = await res.json();
+            alert(error.error || 'Failed to add product');
+        }
+    });
+
+
     loadProducts();
 
     // Load and display products in the Manage section
