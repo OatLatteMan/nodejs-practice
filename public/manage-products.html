@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Manage Products</title>
 </head>
+
 <body>
   <h1>Manage Products</h1>
+
+  <div id="message" style="color: green;"></div>
+  <ul id="product-list"></ul>
+  <script src="/scripts/manage.js"></script>
 
   <!-- Display all products -->
   <section>
     <h2>All Products</h2>
-    <button onclick="loadProducts()">Refresh List</button>
+    <button onclick="readProductsFromFile()">Refresh List</button>
     <ul id="productsList"></ul>
   </section>
 
@@ -43,7 +49,7 @@
   <script>
     const apiBase = '/api/products';
 
-    async function loadProducts() {
+    async function readProductsFromFile() {
       const res = await fetch(apiBase);
       const products = await res.json();
       const list = document.getElementById('productsList');
@@ -70,7 +76,7 @@
       });
       const data = await res.json();
       document.getElementById('deleteResult').textContent = JSON.stringify(data, null, 2);
-      loadProducts(); // Refresh list after deletion
+      readProductsFromFile(); // Refresh list after deletion
     }
 
     async function updateProduct() {
@@ -86,11 +92,12 @@
 
       const data = await res.json();
       document.getElementById('updateResult').textContent = JSON.stringify(data, null, 2);
-      loadProducts(); // Refresh list after update
+      readProductsFromFile(); // Refresh list after update
     }
 
     // Load products on page load
-    window.onload = loadProducts;
+    window.onload = readProductsFromFile;
   </script>
 </body>
+
 </html>

@@ -1,49 +1,56 @@
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
 const router = express.Router();
 const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
 
-// Helper: Load products
-function loadProducts() {
-  const data = fs.readFileSync(dataFilePath);
-  return JSON.parse(data);
+// Helper: Read products from file
+async function readProductsFromFile() {
+  const fileData = await fs.readFile(dataFilePath, 'utf-8');
+  return JSON.parse(fileData);
 }
 
-// Helper: Save products
-function saveProducts(products) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(products, null, 2));
-}
-
-// GET all products
-router.get('/', (req, res) => {
-  const products = loadProducts();
-  res.json(products);
+router.get('/', async (req, res) => {
+  try {
+    const products = await readProductsFromFile();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load products' });
+  }
 });
 
 // POST a new product
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { name, price } = req.body;
+
   if (!name || !price) {
     return res.status(400).json({ error: 'Name and price are required' });
   }
 
-  const products = loadProducts();
-  const newProduct = {
-    id: Date.now(),
-    name,
-    price
-  };
-  products.push(newProduct);
-  saveProducts(products);
+  try {
+    const fileData = await fs.readFile(dataFilePath, 'utf-8');
+    const products = JSON.parse(fileData);
 
-  res.status(201).json(newProduct);
+    const newProduct = {
+      id: Date.now(),
+      name,
+      price
+    };
+
+    products.push(newProduct);
+
+    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error('Error writing file:', error);
+    res.status(500).json({ error: 'Failed to save product' });
+  }
 });
 
 // ✅ GET product by ID
 router.get('/:id', (req, res) => {
-  const products = loadProducts();
+  const products = readProductsFromFile();
   const product = products.find(p => p.id == req.params.id);
   if (!product) {
     return res.status(404).json({ error: 'Product not found' });
@@ -51,34 +58,51 @@ router.get('/:id', (req, res) => {
   res.json(product);
 });
 
-// ✅ DELETE product by ID
-router.delete('/:id', (req, res) => {
-  let products = loadProducts();
-  const productIndex = products.findIndex(p => p.id == req.params.id);
+// ✅ PUT (update) product by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const fileData = await fs.readFile(dataFilePath, 'utf-8');
+    const products = JSON.parse(fileData);
 
-  if (productIndex === -1) {
-    return res.status(404).json({ error: 'Product not found' });
+    const productIndex = products.findIndex(p => p.id == req.params.id);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const updatedData = req.body;
+    products[productIndex] = { ...products[productIndex], ...updatedData };
+
+    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
+    res.json({ message: 'Product updated', product: products[productIndex] });
+
+  } catch (err) {
+    console.error('Error updating product:', err);
+    res.status(500).json({ error: 'Failed to update product' });
   }
-
-  const deleted = products.splice(productIndex, 1)[0];
-  saveProducts(products);
-  res.json({ message: 'Product deleted', product: deleted });
 });
 
-// ✅ PUT (update) product by ID
-router.put('/:id', (req, res) => {
-  let products = loadProducts();
-  const productIndex = products.findIndex(p => p.id == req.params.id);
+// ✅ DELETE product by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const fileData = await fs.readFile(dataFilePath, 'utf-8');
+    const products = JSON.parse(fileData);
 
-  if (productIndex === -1) {
-    return res.status(404).json({ error: 'Product not found' });
+    const productIndex = products.findIndex(p => p.id == req.params.id);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const deleted = products.splice(productIndex, 1)[0];
+
+    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
+    res.json({ message: 'Product deleted', product: deleted });
+
+  } catch (err) {
+    console.error('Error deleting product:', err);
+    res.status(500).json({ error: 'Failed to delete product' });
   }
-
-  const updatedData = req.body;
-  products[productIndex] = { ...products[productIndex], ...updatedData };
-  saveProducts(products);
-
-  res.json({ message: 'Product updated', product: products[productIndex] });
 });
 
 module.exports = router;
