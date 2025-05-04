@@ -49,13 +49,18 @@ router.post('/', async (req, res) => {
 });
 
 // ✅ GET product by ID
-router.get('/:id', (req, res) => {
-  const products = readProductsFromFile();
-  const product = products.find(p => p.id == req.params.id);
-  if (!product) {
-    return res.status(404).json({ error: 'Product not found' });
+router.get('/:id', async (req, res) => {
+  try {
+    const products = await readProductsFromFile();
+    const product = products.find(p => p.id == req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (err) {
+    console.error('Error loading product:', err);
+    res.status(500).json({ error: 'Failed to load product' });
   }
-  res.json(product);
 });
 
 // ✅ PUT (update) product by ID

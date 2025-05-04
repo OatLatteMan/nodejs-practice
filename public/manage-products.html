@@ -21,8 +21,16 @@
       margin-left: 10px;
     }
   </style>
-  <h1>Manage Products</h1>
 
+  <!-- Add new product -->
+  <section id="add-section">
+    <h3>Add Product</h3>
+    <input type="text" id="add-name" placeholder="Product name" />
+    <input type="number" id="add-price" placeholder="Product price" />
+    <button id="add-button">Add Product</button>
+  </section>
+
+  <h1>Manage Products</h1>
   <div id="message" style="color: green;"></div>
   <ul id="product-list"></ul>
   <script src="/scripts/manage.js"></script>
@@ -51,13 +59,12 @@
   </section>
 
   <!-- Update product by ID -->
-  <section>
-    <h2>Update Product</h2>
-    <input type="text" id="updateId" placeholder="Enter Product ID" /><br />
-    <input type="text" id="updateName" placeholder="New Name" /><br />
-    <input type="number" id="updatePrice" placeholder="New Price" /><br />
-    <button onclick="updateProduct()">Update</button>
-    <pre id="updateResult"></pre>
+  <section id="update-section">
+    <h3>Update product</h3>
+    <input type="number" id="update-id" placeholder="Product ID" readonly />
+    <input type="text" id="update-name" placeholder="New name" />
+    <input type="number" id="update-price" placeholder="New price" />
+    <button id="update-button">Update Product</button>
   </section>
 
   <script>

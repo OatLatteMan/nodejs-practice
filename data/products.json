@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Laptop",
-    "price": 1299
+    "price": "1299"
   },
   {
     "id": 2,
@@ -11,8 +11,8 @@
   },
   {
     "id": 3,
-    "name": "Keyboard",
-    "price": 99
+    "name": "White Keyboard",
+    "price": "799"
   },
   {
     "id": 4,
@@ -33,15 +33,5 @@
     "id": 7,
     "name": "A sweet",
     "price": "13"
-  },
-  {
-    "id": 8,
-    "name": "Metro ticket",
-    "price": "30"
-  },
-  {
-    "id": 9,
-    "name": "Croissaint",
-    "price": "10"
   }
 ]
