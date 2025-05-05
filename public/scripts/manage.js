@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('update-id').value = '';
             document.getElementById('update-name').value = '';
             document.getElementById('update-price').value = '';
-            loadProductList(); // Reload product list
+            loadProducts(); // Reload product list
             setTimeout(() => {
                 document.getElementById('message').textContent = '';
             }, 3000);

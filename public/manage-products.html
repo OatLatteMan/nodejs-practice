@@ -22,29 +22,33 @@
     }
   </style>
 
-  <!-- Add new product -->
-  <section id="add-section">
-    <h3>Add Product</h3>
-    <input type="text" id="add-name" placeholder="Product name" />
-    <input type="number" id="add-price" placeholder="Product price" />
-    <button id="add-button">Add Product</button>
-  </section>
+  <section class="product-admin">
+    <h2>Product Administration</h2>
 
-  <!-- Update product by ID -->
-  <section id="update-section">
-    <h3>Update product</h3>
-    <input type="number" id="update-id" placeholder="Product ID" readonly />
-    <input type="text" id="update-name" placeholder="New name" />
-    <input type="number" id="update-price" placeholder="New price" />
-    <button id="update-button">Update Product</button>
-  </section>
+    <!-- Add new product -->
+    <div class="form-block">
+      <h3>Add Product</h3>
+      <input type="text" id="add-name" placeholder="Product name" />
+      <input type="number" id="add-price" placeholder="Product price" />
+      <button id="add-button">Add Product</button>
+    </div>
 
-  <!-- Manage Product List -->
-  <section id="manage-section">
-    <h1>Manage Products</h1>
-    <div id="message" style="color: green;"></div>
-    <ul id="product-list"></ul>
-    <script src="/scripts/manage.js"></script>
+    <!-- Update product by ID -->
+    <div class="form-block">
+      <h3>Update product</h3>
+      <input type="number" id="update-id" placeholder="Product ID" readonly />
+      <input type="text" id="update-name" placeholder="New name" />
+      <input type="number" id="update-price" placeholder="New price" />
+      <button id="update-button">Update Product</button>
+    </div>
+
+    <!-- Manage Product List -->
+    <div class="form-block">
+      <h1>Manage Products</h1>
+      <div id="message" style="color: green;"></div>
+      <ul id="product-list"></ul>
+      <script src="/scripts/manage.js"></script>
+    </div>
   </section>
 
   <!-- Display all products -->
