@@ -20,6 +20,57 @@
     button {
       margin-left: 10px;
     }
+
+    .product-admin {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-admin h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .form-block {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .form-block h3 {
+      margin-bottom: 0.8rem;
+    }
+
+    .form-block input {
+      display: block;
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-block button {
+      padding: 0.6rem 1rem;
+      background-color: #007bff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .form-block button:hover {
+      background-color: #0056b3;
+    }
   </style>
 
   <section class="product-admin">
@@ -51,27 +102,29 @@
     </div>
   </section>
 
-  <!-- Display all products -->
-  <section>
-    <h2>All Products</h2>
-    <button onclick="readProductsFromFile()">Refresh List</button>
-    <ul id="productsList"></ul>
-  </section>
+  <section class="product-admin">
+    <!-- Display all products -->
+    <div class="form-block">
+      <h2>All Products</h2>
+      <button onclick="readProductsFromFile()">Refresh List</button>
+      <ul id="productsList"></ul>
+    </div>
 
-  <!-- View product by ID -->
-  <section>
-    <h2>View Product</h2>
-    <input type="text" id="viewId" placeholder="Enter Product ID" />
-    <button onclick="viewProduct()">View</button>
-    <pre id="viewResult"></pre>
-  </section>
+    <!-- View product by ID -->
+    <div class="form-block">
+      <h2>View Product</h2>
+      <input type="text" id="view-id" placeholder="Enter Product ID" />
+      <button id="view-button" onclick="viewProduct()">View</button>
+      <pre id="viewResult"></pre>
+    </div>
 
-  <!-- Delete product by ID -->
-  <section>
-    <h2>Delete Product</h2>
-    <input type="text" id="deleteId" placeholder="Enter Product ID" />
-    <button onclick="deleteProduct()">Delete</button>
-    <pre id="deleteResult"></pre>
+    <!-- Delete product by ID -->
+    <div class="form-block">
+      <h2>Delete Product</h2>
+      <input type="text" id="delete-id" placeholder="Enter Product ID" />
+      <button id="delete-button" onclick="deleteProduct()">Delete</button>
+      <pre id="deleteResult"></pre>
+    </div>
   </section>
 
   <script>
@@ -88,23 +141,6 @@
         li.textContent = `ID: ${p.id} — ${p.name} ($${p.price})`;
         list.appendChild(li);
       });
-    }
-
-    async function viewProduct() {
-      const id = document.getElementById('viewId').value;
-      const res = await fetch(`${apiBase}/${id}`);
-      const data = await res.json();
-      document.getElementById('viewResult').textContent = JSON.stringify(data, null, 2);
-    }
-
-    async function deleteProduct() {
-      const id = document.getElementById('deleteId').value;
-      const res = await fetch(`${apiBase}/${id}`, {
-        method: 'DELETE',
-      });
-      const data = await res.json();
-      document.getElementById('deleteResult').textContent = JSON.stringify(data, null, 2);
-      readProductsFromFile(); // Refresh list after deletion
     }
 
     async function updateProduct() {
