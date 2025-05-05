@@ -116,16 +116,16 @@
     <!-- View product by ID -->
     <div class="form-block">
       <h3>View Product</h3>
-      <input type="number" id="view-id" placeholder="Enter Product ID" />
-      <button id="view-button">View</button>
+      <input type="text" id="view-id" placeholder="Enter Product ID" />
+      <button id="view-button" onclick="handleViewProduct()">View</button>
       <pre id="viewResult"></pre>
     </div>
 
     <!-- Delete product by ID -->
     <div class="form-block">
       <h3>Delete Product</h3>
-      <input type="number" id="delete-id" placeholder="Enter Product ID" />
-      <button id="delete-button">Delete</button>
+      <input type="text" id="delete-id" placeholder="Enter Product ID" />
+      <button id="delete-button" onclick="handleDeleteProduct()">Delete</button>
       <pre id="deleteResult"></pre>
     </div>
   </section>
