@@ -30,10 +30,22 @@
     <button id="add-button">Add Product</button>
   </section>
 
-  <h1>Manage Products</h1>
-  <div id="message" style="color: green;"></div>
-  <ul id="product-list"></ul>
-  <script src="/scripts/manage.js"></script>
+  <!-- Update product by ID -->
+  <section id="update-section">
+    <h3>Update product</h3>
+    <input type="number" id="update-id" placeholder="Product ID" readonly />
+    <input type="text" id="update-name" placeholder="New name" />
+    <input type="number" id="update-price" placeholder="New price" />
+    <button id="update-button">Update Product</button>
+  </section>
+
+  <!-- Manage Product List -->
+  <section id="manage-section">
+    <h1>Manage Products</h1>
+    <div id="message" style="color: green;"></div>
+    <ul id="product-list"></ul>
+    <script src="/scripts/manage.js"></script>
+  </section>
 
   <!-- Display all products -->
   <section>
@@ -56,15 +68,6 @@
     <input type="text" id="deleteId" placeholder="Enter Product ID" />
     <button onclick="deleteProduct()">Delete</button>
     <pre id="deleteResult"></pre>
-  </section>
-
-  <!-- Update product by ID -->
-  <section id="update-section">
-    <h3>Update product</h3>
-    <input type="number" id="update-id" placeholder="Product ID" readonly />
-    <input type="text" id="update-name" placeholder="New name" />
-    <input type="number" id="update-price" placeholder="New price" />
-    <button id="update-button">Update Product</button>
   </section>
 
   <script>
