@@ -112,12 +112,22 @@
     <h2>Product Administration</h2>
 
     <div class="tabs">
+      <button class="tab-button" data-tab="search">Search</button>
       <button class="tab-button active" data-tab="add">Add</button>
       <button class="tab-button" data-tab="update">Update</button>
       <button class="tab-button" data-tab="manage">Manage</button>
       <button class="tab-button" data-tab="view">View</button>
       <button class="tab-button" data-tab="delete">Delete</button>
       <button class="tab-button" data-tab="all">All</button>
+    </div>
+
+    <div id="tab-search" class="tab-content form-block">
+      <h3>Search Products</h3>
+      <input type="text" id="search-query" placeholder="Search by name" />
+      <input type="number" id="min-price" placeholder="Min Price" step="0.01" />
+      <input type="number" id="max-price" placeholder="Max Price" step="0.01" />
+      <button id="search-button">Search</button>
+      <ul id="search-results"></ul>
     </div>
 
     <div id="tab-add" class="tab-content active form-block">

@@ -139,7 +139,43 @@ function handleDeleteProduct() {
     }
 }
 
+async function searchProducts() {
+    const query = document.getElementById('search-query')?.value.trim();
+    const min = document.getElementById('min-price')?.value;
+    const max = document.getElementById('max-price')?.value;
+    const resultList = document.getElementById('search-results');
+    resultList.innerHTML = '';
+
+    const params = new URLSearchParams();
+    if (query) params.append('q', query);
+    if (min) params.append('minPrice', min);
+    if (max) params.append('maxPrice', max);
+
+    try {
+        const res = await fetch(`/api/products/search?${params.toString()}`);
+        const results = await res.json();
+
+        if (!res.ok) {
+            return resultList.innerHTML = `<li>Error: ${results.error}</li>`;
+        }
+
+        if (results.length === 0) {
+            resultList.innerHTML = '<li>No products found.</li>';
+        } else {
+            results.forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${p.id} — ${p.name} ($${p.price})`;
+                resultList.appendChild(li);
+            });
+        }
+    } catch (err) {
+        console.error('Search failed:', err);
+        resultList.innerHTML = '<li>Something went wrong during search.</li>';
+    }
+}
+
 // Event listeners (safe with optional chaining)
+document.getElementById('search-button')?.addEventListener('click', searchProducts);
 document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
 document.getElementById('refresh-products')?.addEventListener('click', loadProducts);

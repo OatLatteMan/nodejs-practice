@@ -11,6 +11,31 @@ async function readProductsFromFile() {
   return JSON.parse(fileData);
 }
 
+// GET /api/products/search?q=keyword
+router.get('/products/search', async (req, res) => {
+  const query = req.query.q?.toLowerCase() || '';
+  const minPrice = parseFloat(req.query.minPrice);
+  const maxPrice = parseFloat(req.query.maxPrice);
+
+  try {
+    const products = await readProductsFromFile();
+
+    const matchedProducts = products.filter(p => {
+      const nameMatches = p.name.toLowerCase().includes(query);
+      const priceMatches =
+        (isNaN(minPrice) || p.price >= minPrice) &&
+        (isNaN(maxPrice) || p.price <= maxPrice);
+
+      return nameMatches && priceMatches;
+    });
+
+    res.json(matchedProducts);
+  } catch (err) {
+    console.error('Error reading products:', err);
+    res.status(500).json({ error: 'Failed to search products' });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     const products = await readProductsFromFile();
