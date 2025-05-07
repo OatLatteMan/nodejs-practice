@@ -143,6 +143,7 @@ function handleDeleteProduct() {
 document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
 document.getElementById('refresh-products')?.addEventListener('click', loadProducts);
+document.getElementById('view-button')?.addEventListener('click', handleViewProduct);
 
 // Load products on page load
 window.addEventListener('DOMContentLoaded', loadProducts);
