@@ -4,7 +4,40 @@
 <head>
   <meta charset="UTF-8" />
   <title>Manage Products</title>
+</head>
+
+<body>
   <style>
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .tab-button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background-color: #e0e0e0;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .tab-button.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     ul {
       list-style: none;
       padding: 0;
@@ -74,22 +107,27 @@
       margin-bottom: 1rem;
     }
   </style>
-</head>
 
-<body>
   <section class="product-admin">
     <h2>Product Administration</h2>
 
-    <!-- Add new product -->
-    <div class="form-block">
+    <div class="tabs">
+      <button class="tab-button active" data-tab="add">Add</button>
+      <button class="tab-button" data-tab="update">Update</button>
+      <button class="tab-button" data-tab="manage">Manage</button>
+      <button class="tab-button" data-tab="view">View</button>
+      <button class="tab-button" data-tab="delete">Delete</button>
+      <button class="tab-button" data-tab="all">All</button>
+    </div>
+
+    <div id="tab-add" class="tab-content active form-block">
       <h3>Add Product</h3>
       <input type="text" id="add-name" placeholder="Product name" />
       <input type="number" id="add-price" placeholder="Product price" />
       <button id="add-button">Add Product</button>
     </div>
 
-    <!-- Update product by ID -->
-    <div class="form-block">
+    <div id="tab-update" class="tab-content form-block">
       <h3>Update Product</h3>
       <input type="number" id="update-id" placeholder="Product ID" readonly />
       <input type="text" id="update-name" placeholder="New name" />
@@ -97,38 +135,50 @@
       <button id="update-button">Update Product</button>
     </div>
 
-    <!-- Manage product list -->
-    <div class="form-block">
+    <div id="tab-manage" class="tab-content form-block">
       <h3>Manage Products</h3>
-      <div id="message"></div>
+      <div id="message" style="color: green;"></div>
       <ul id="product-list"></ul>
     </div>
-  </section>
 
-  <section class="product-admin">
-    <!-- All products -->
-    <div class="form-block">
+    <div id="tab-view" class="tab-content form-block">
+      <h3>View Product</h3>
+      <input type="text" id="view-id" placeholder="Enter Product ID" />
+      <button id="view-button">View</button>
+      <pre id="viewResult"></pre>
+    </div>
+
+    <div id="tab-delete" class="tab-content form-block">
+      <h3>Delete Product</h3>
+      <input type="text" id="delete-id" placeholder="Enter Product ID" />
+      <button id="delete-button">Delete</button>
+      <pre id="deleteResult"></pre>
+    </div>
+
+    <div id="tab-all" class="tab-content form-block">
       <h3>All Products</h3>
       <button id="refresh-button">Refresh List</button>
       <ul id="productsList"></ul>
     </div>
-
-    <!-- View product by ID -->
-    <div class="form-block">
-      <h3>View Product</h3>
-      <input type="text" id="view-id" placeholder="Enter Product ID" />
-      <button id="view-button" onclick="handleViewProduct()">View</button>
-      <pre id="viewResult"></pre>
-    </div>
-
-    <!-- Delete product by ID -->
-    <div class="form-block">
-      <h3>Delete Product</h3>
-      <input type="text" id="delete-id" placeholder="Enter Product ID" />
-      <button id="delete-button" onclick="handleDeleteProduct()">Delete</button>
-      <pre id="deleteResult"></pre>
-    </div>
   </section>
+
+  <script>
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-tab');
+
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        document.getElementById(`tab-${target}`).classList.add('active');
+      });
+    });
+  </script>
 
   <!-- External JavaScript -->
   <script src="/scripts/manage.js"></script>
