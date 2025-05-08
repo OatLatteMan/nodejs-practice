@@ -1,35 +1,41 @@
-const fs = require('fs').promises;
+// utils/userStore.js
+
+const fs = require('fs/promises');
 const path = require('path');
-const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
 
-const usersFile = path.join(__dirname, '..', 'data', 'users.json');
+const usersFilePath = path.join(__dirname, '..', 'data', 'users.json');
 
-async function getUsers() {
-  const data = await fs.readFile(usersFile, 'utf-8');
-  return JSON.parse(data);
+// Read all users from the file
+async function readUsers() {
+  try {
+    const data = await fs.readFile(usersFilePath, 'utf-8');
+    return JSON.parse(data);
+  } catch (err) {
+    return []; // Return empty list if file doesn't exist
+  }
 }
 
-async function saveUsers(users) {
-  await fs.writeFile(usersFile, JSON.stringify(users, null, 2));
+// Write all users to the file
+async function writeUsers(users) {
+  await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2));
 }
 
-async function createUser(username, password) {
-  const users = await getUsers();
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = {
-    id: uuidv4(),
-    username,
-    password: hashedPassword
-  };
-  users.push(newUser);
-  await saveUsers(users);
-  return newUser;
+// Find one user by username
+async function findUser(username) {
+  const users = await readUsers();
+  return users.find(u => u.username === username);
 }
 
-async function findUserByUsername(username) {
-  const users = await getUsers();
-  return users.find(user => user.username === username);
+// Add a new user
+async function addUser(user) {
+  const users = await readUsers();
+  users.push(user);
+  await writeUsers(users);
 }
 
-module.exports = { createUser, findUserByUsername };
+module.exports = {
+  readUsers,
+  writeUsers,
+  findUser,
+  addUser,
+};

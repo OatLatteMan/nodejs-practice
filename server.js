@@ -1,16 +1,26 @@
+require('dotenv').config();
+console.log('SESSION_SECRET is:', process.env.SESSION_SECRET);
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 2089;
 const session = require('express-session');
+const authRoutes = require('./routes/authRoutes')
+
+app.use(express.json());
 
 app.use(session({
-  secret: 'come-on-you-spurs', // replace with an env var in production
+  secret: process.env.SESSION_SECRET, // use process.env.SECRET in production
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // set to true if using HTTPS
+  cookie: {
+    httpOnly: true,         // Prevents client-side JS access to cookie
+    maxAge: 1000 * 60 * 60, // 1 hour session duration
+    secure: false           // Set to true if using HTTPS
+  }
 }));
-app.use(express.json()); // parse JSON body
+
+app.use('/api/auth', authRoutes)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Products routes
