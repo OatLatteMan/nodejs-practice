@@ -12,7 +12,7 @@ async function readProductsFromFile() {
 }
 
 // GET /api/products/search?q=keyword
-router.get('/products/search', async (req, res) => {
+router.get('/search', async (req, res) => {
   const query = req.query.q?.toLowerCase() || '';
   const minPrice = parseFloat(req.query.minPrice);
   const maxPrice = parseFloat(req.query.maxPrice);
@@ -22,9 +22,11 @@ router.get('/products/search', async (req, res) => {
 
     const matchedProducts = products.filter(p => {
       const nameMatches = p.name.toLowerCase().includes(query);
+      const price = parseFloat(p.price); // still good practice
+
       const priceMatches =
-        (isNaN(minPrice) || p.price >= minPrice) &&
-        (isNaN(maxPrice) || p.price <= maxPrice);
+        (isNaN(minPrice) || price >= minPrice) &&
+        (isNaN(maxPrice) || price <= maxPrice);
 
       return nameMatches && priceMatches;
     });
@@ -35,6 +37,7 @@ router.get('/products/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to search products' });
   }
 });
+
 
 router.get('/', async (req, res) => {
   try {
