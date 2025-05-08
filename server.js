@@ -2,7 +2,14 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 2089;
+const session = require('express-session');
 
+app.use(session({
+  secret: 'come-on-you-spurs', // replace with an env var in production
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // set to true if using HTTPS
+}));
 app.use(express.json()); // parse JSON body
 app.use(express.static(path.join(__dirname, 'public')));
 
