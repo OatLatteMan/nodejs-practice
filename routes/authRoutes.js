@@ -20,17 +20,25 @@ router.post('/register', async (req, res) => {
   res.json({ message: 'Registered successfully' });
 });
 
-// Login user
+// POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await userStore.findUser(username);
-  if (!user || user.password !== password) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
+  try {
+    const existingUser = await userStore.findUser(username);
 
-  req.session.username = username;
-  res.json({ message: 'Logged in successfully' });
+    if (!existingUser || existingUser.password !== password) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Store minimal session info
+    req.session.user = { username: existingUser.username };
+
+    res.json({ message: 'Login successful' });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Login failed' });
+  }
 });
 
 // Logout user
