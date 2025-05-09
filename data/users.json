@@ -1,4 +1,6 @@
 [
-  "dimas",
-  "alice"
+  {
+    "username": "alice",
+    "password": "test123"
+  }
 ]

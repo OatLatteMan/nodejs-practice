@@ -4,20 +4,26 @@ const userStore = require('../utils/userStore');
 
 // Register new user
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password required' });
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const existingUser = await userStore.findUser(username);
+    if (existingUser) {
+      return res.status(409).json({ error: 'Username already taken' });
+    }
+
+    // ✅ THIS LINE IS CRUCIAL
+    await userStore.addUser({ username, password });
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ error: 'Failed to register user' });
   }
-
-  const existingUser = await userStore.findUser(username);
-  if (existingUser) {
-    return res.status(409).json({ error: 'Username already taken' });
-  }
-
-  await userStore.addUser(username, password);
-  req.session.username = username; // Auto-login after register
-  res.json({ message: 'Registered successfully' });
 });
 
 // POST /api/auth/login
