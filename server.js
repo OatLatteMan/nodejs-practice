@@ -7,19 +7,18 @@ const PORT = 2089;
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes')
 
-app.use(express.json());
-
 app.use(session({
-  secret: process.env.SESSION_SECRET, // use process.env.SECRET in production
+  secret: process.env.SESSION_SECRET || 'my_super_secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: true,         // Prevents client-side JS access to cookie
-    maxAge: 1000 * 60 * 60, // 1 hour session duration
-    secure: false           // Set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60, // 1 hour
+    secure: false           // true only if using HTTPS
   }
 }));
 
+app.use(express.json());
 app.use('/api/auth', authRoutes)
 app.use(express.static(path.join(__dirname, 'public')));
 

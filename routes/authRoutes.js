@@ -26,6 +26,28 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Check current session user
+router.get('/me', (req, res) => {
+  if (req.session.username) {
+    res.json({ loggedIn: true, username: req.session.username });
+  } else {
+    res.status(401).json({ loggedIn: false, message: 'Not logged in' });
+  }
+});
+
+// Temporary route to test session
+router.get('/check-session', (req, res) => {
+  console.log('Check session:', req.session);
+
+  const username = req.session?.user?.username;
+  if (username) {
+    res.json({ loggedInAs: username });
+  } else {
+    res.status(401).json({ error: 'Not logged in' });
+  }
+});
+
+
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -39,6 +61,7 @@ router.post('/login', async (req, res) => {
 
     // Store minimal session info
     req.session.user = { username: existingUser.username };
+    console.log('Session set:', req.session); // <--- DEBUG
 
     res.json({ message: 'Login successful' });
   } catch (err) {
