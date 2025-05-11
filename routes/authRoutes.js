@@ -84,4 +84,38 @@ router.post('/logout', (req, res) => {
   });
 });
 
+const requireLogin = (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+  next();
+};
+
+// Change password
+router.post('/change-password', requireLogin, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const username = req.session.user.username;
+
+  try {
+    const user = await userStore.findUser(username);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(403).json({ error: 'Current password incorrect' });
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await userStore.updatePassword(username, hashed);
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('Change password error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
 module.exports = router;

@@ -36,9 +36,18 @@ async function addUser({ username, password }) {
   await saveUsers(users);
 }
 
+async function updatePassword(username, newHashedPassword) {
+  const users = await loadUsers();
+  const updated = users.map(u =>
+    u.username === username ? { ...u, password: newHashedPassword } : u
+  );
+  await saveUsers(updated);
+}
+
 module.exports = {
   loadUsers,
   saveUsers,
   findUser,
   addUser,
+  updatePassword,
 };
