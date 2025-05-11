@@ -27,15 +27,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Check current session user
-router.get('/me', (req, res) => {
-  if (req.session.username) {
-    res.json({ loggedIn: true, username: req.session.username });
-  } else {
-    res.status(401).json({ loggedIn: false, message: 'Not logged in' });
-  }
-});
-
 // Temporary route to test session
 router.get('/check-session', (req, res) => {
   console.log('Check session:', req.session);
@@ -114,6 +105,15 @@ router.post('/change-password', requireLogin, async (req, res) => {
   } catch (err) {
     console.error('Change password error:', err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get current logged-in user
+router.get('/me', (req, res) => {
+  if (req.session && req.session.user) {
+    res.json({ loggedInAs: req.session.user.username });
+  } else {
+    res.status(401).json({ error: 'Not logged in' });
   }
 });
 
