@@ -6,6 +6,7 @@ const app = express();
 const PORT = 2089;
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes')
+const protectedRoutes = require('./routes/protectedRoutes')
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'my_super_secret',
@@ -19,8 +20,10 @@ app.use(session({
 }));
 
 app.use(express.json());
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/protected-routes', protectedRoutes);
 
 // Products routes
 app.get('/products', (req, res) => {
