@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userStore = require('../utils/userStore');
+const bcrypt = require('bcrypt');
 
 // Register new user
 router.post('/register', async (req, res) => {
@@ -50,19 +51,20 @@ router.get('/check-session', (req, res) => {
 
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-
   try {
-    const existingUser = await userStore.findUser(username);
+    const { username, password } = req.body;
 
-    if (!existingUser || existingUser.password !== password) {
+    const user = await userStore.findUser(username);
+    if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Store minimal session info
-    req.session.user = { username: existingUser.username };
-    console.log('Session set:', req.session); // <--- DEBUG
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
+    req.session.user = { username };
     res.json({ message: 'Login successful' });
   } catch (err) {
     console.error('Login error:', err);
@@ -72,7 +74,12 @@ router.post('/login', async (req, res) => {
 
 // Logout user
 router.post('/logout', (req, res) => {
-  req.session.destroy(() => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Logout error:', err);
+      return res.status(500).json({ error: 'Logout failed' });
+    }
+    res.clearCookie('connect.sid'); // Clear the session cookie
     res.json({ message: 'Logged out successfully' });
   });
 });
