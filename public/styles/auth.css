@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 0.5rem;
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #374151;
+}
+
+.toggle-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem; /* Add some breathing room */
+}
+
+.toggle-buttons button {
+    flex: 1;
+    margin: 0 0.25rem;
+}
+
+#message {
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#message.success {
+    color: green;
+    background-color: #ecfdf5;
+}
+
+#message.error {
+    color: red;
+    background-color: #fef2f2;
+}
