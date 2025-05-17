@@ -30,6 +30,7 @@ app.get('/products', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'add-product.html'));
 });
 
+// direct json, with it's contains shown
 const productRoutes = require('./routes/productsRoutes');
 app.use('/api/products', productRoutes);
 
