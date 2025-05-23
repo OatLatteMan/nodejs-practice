@@ -1,3 +1,9 @@
+// something went off and I can't start the server by
+// "node server.js" command. I'll try fixing that tomorrow
+// so wish me a good luck, please
+// I'll also prepare a "README" file to both this and
+// my django project
+
 require('dotenv').config();
 console.log('SESSION_SECRET is:', process.env.SESSION_SECRET);
 const express = require('express');
