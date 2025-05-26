@@ -50,6 +50,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     } catch (err) {
         showMessage('Login error.', true);
     }
+
 });
 
 document.getElementById('register-form').addEventListener('submit', async (e) => {
