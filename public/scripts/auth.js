@@ -55,7 +55,6 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 document.getElementById('register-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     clearMessage();
-
     const form = e.target;
     const data = {
         username: form.username.value,
