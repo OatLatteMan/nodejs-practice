@@ -24,19 +24,21 @@ function showMessage(text, isError = false) {
 }
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
+    const rememberMe = document.getElementById('remember-me').checked;
+
     e.preventDefault();
     clearMessage();
     const form = e.target;
     const data = {
         username: form.username.value,
-        password: form.password.value
+        password: form.password.value,
     };
 
     try {
         const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data, rememberMe)
         });
 
         const result = await res.json();
