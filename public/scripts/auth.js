@@ -24,7 +24,6 @@ function showMessage(text, isError = false) {
 }
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
-    const rememberMe = document.getElementById('rememberMe').checked;
 
     e.preventDefault();
     clearMessage();
