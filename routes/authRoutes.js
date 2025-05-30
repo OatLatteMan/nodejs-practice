@@ -43,7 +43,7 @@ router.get('/check-session', (req, res) => {
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, rememberMe } = req.body;
 
     const user = await userStore.findUser(username);
     if (!user) {
@@ -56,6 +56,11 @@ router.post('/login', async (req, res) => {
     }
 
     req.session.user = { username };
+    // 🔁 Dynamically set cookie maxAge
+    req.session.cookie.maxAge = rememberMe
+      ? 1000 * 60 * 60 * 24 * 7   // 7 days
+      : 1000 * 60 * 60;           // 1 hour
+
     res.json({ message: 'Login successful' });
   } catch (err) {
     console.error('Login error:', err);
