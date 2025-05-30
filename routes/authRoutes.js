@@ -56,10 +56,14 @@ router.post('/login', async (req, res) => {
     }
 
     req.session.user = { username };
-    // 🔁 Dynamically set cookie maxAge
-    req.session.cookie.maxAge = rememberMe
-      ? 1000 * 60 * 60 * 24 * 7   // 7 days
-      : 1000 * 60 * 60;           // 1 hour
+
+    // ✅ Only set maxAge if rememberMe is checked
+    if (rememberMe) {
+      req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 7; // 7 days
+    } else {
+      // ❗ Do not set maxAge → makes cookie expire on browser close
+      req.session.cookie.expires = false;
+    }
 
     res.json({ message: 'Login successful' });
   } catch (err) {
@@ -67,6 +71,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Login failed' });
   }
 });
+
 
 // Logout user
 router.post('/logout', (req, res) => {

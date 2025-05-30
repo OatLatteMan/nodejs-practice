@@ -24,7 +24,7 @@ function showMessage(text, isError = false) {
 }
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
-    const rememberMe = document.getElementById('remember-me').checked;
+    const rememberMe = document.getElementById('rememberMe').checked;
 
     e.preventDefault();
     clearMessage();
@@ -32,13 +32,14 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const data = {
         username: form.username.value,
         password: form.password.value,
+        rememberMe: document.getElementById('rememberMe').checked
     };
 
     try {
         const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data, rememberMe)
+            body: JSON.stringify(data)
         });
 
         const result = await res.json();
