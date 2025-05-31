@@ -29,6 +29,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/protected-routes', protectedRoutes);
 
 // login/regisrer page
+app.use('/api/auth', authRoutes);
+
+app.get('/welcome.html', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/auth'); // or '/auth.html' depending on your setup
+  }
+  res.sendFile(__dirname + '/public/welcome.html');
+});
+
 app.get('/auth', (req, res) => {
   if (req.session.user) {
     return res.redirect('/welcome.html');

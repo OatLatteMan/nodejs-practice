@@ -127,5 +127,9 @@ router.get('/me', (req, res) => {
   }
 });
 
+router.get('/session', (req, res) => {
+  res.json({ loggedIn: !!req.session.user });
+});
+
 
 module.exports = router;
