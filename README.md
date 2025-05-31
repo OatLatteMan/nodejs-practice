@@ -60,7 +60,7 @@ Folder Structure
 
  ┗ 📜 README.md            # Project overview
 
-👤 Author
 
-    GitHub [OatLatteMan](https://github.com/OatLatteMan)
-    Feel free to reach out for collaboration or feedback!
+👤 Author: GitHub [OatLatteMan](https://github.com/OatLatteMan)
+
+Feel free to reach out for collaboration or feedback!
