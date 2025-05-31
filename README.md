@@ -49,16 +49,11 @@ Demo login:
 Folder Structure
 
 📦 project-root
-
- ┣ 📂 public/              # Static files (HTML, CSS, client JS)
-
- ┣ 📂 routes/              # Express routes
-
- ┣ 📂 utils/               # Utility functions and storage
-
- ┣ 📜 server.js            # Main server file
-
- ┗ 📜 README.md            # Project overview
+┣ 📂 public/              # Static files (HTML, CSS, client JS)
+┣ 📂 routes/              # Express routes
+┣ 📂 utils/               # Utility functions and storage
+┣ 📜 server.js            # Main server file
+┗ 📜 README.md            # Project overview
 
 
 👤 Author: GitHub [OatLatteMan](https://github.com/OatLatteMan)
