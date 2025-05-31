@@ -26,8 +26,15 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api/auth', authRoutes);
 app.use('/protected-routes', protectedRoutes);
+
+// login/regisrer page
+app.get('/auth', (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/welcome.html');
+  }
+  res.sendFile(__dirname + '/public/auth.html');
+});
 
 // Products routes
 app.get('/products', (req, res) => {
