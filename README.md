@@ -39,7 +39,7 @@ for managing products inside a shopping cart. This project is part of my persona
     node server.js
 
 5. Reach for any route in server.js via:
-    http://127.0.0.1:2089/[route from server.js]
+    http://127.0.0.1:2089/
 
 
 Demo login:
@@ -49,6 +49,7 @@ Demo login:
 Folder Structure
 
 📦 project-root
+
  ┣ 📂 public/              # Static files (HTML, CSS, client JS)
  ┣ 📂 routes/              # Express routes
  ┣ 📂 utils/               # Utility functions and storage
