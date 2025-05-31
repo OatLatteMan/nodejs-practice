@@ -60,3 +60,7 @@ Demo login:
 ## 👤 Author: GitHub [OatLatteMan](https://github.com/OatLatteMan)
 
 Feel free to reach out for collaboration or feedback!
+
+## 📄 License
+
+This project is for educational and portfolio use.
