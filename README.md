@@ -46,7 +46,7 @@ Demo login:
     login: userHello / password: userHello
 
 
-Folder Structure
+## Folder Structure
 
 📦 project-root
 
@@ -57,6 +57,6 @@ Folder Structure
     ┗ 📜 README.md            # Project overview
 
 
-👤 Author: GitHub [OatLatteMan](https://github.com/OatLatteMan)
+## 👤 Author: GitHub [OatLatteMan](https://github.com/OatLatteMan)
 
 Feel free to reach out for collaboration or feedback!
