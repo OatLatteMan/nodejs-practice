@@ -1,16 +1,35 @@
-# 🎬 Multifunctional application (shopping cart + film DB) - Node.js
+# 🛒 Node.js Product Management App
 
-A web application for managing and reviewing movies and actors. Also
-for managing products inside a shopping cart. This project is part of my personal portfolio and a training ground for mastering backend development using Node.js and Express.
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-brightgreen?logo=node.js)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-blue?logo=express)]
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?logo=javascript)]
+[![Status](https://img.shields.io/badge/Project-In%20Progress-orange)]
+[![License](https://img.shields.io/badge/License-MIT-informational)]
 
-## 📌 Features
+This is a simple full-stack Node.js application that allows users to register, log in, and manage a product list using session-based authentication. It uses Express.js for routing, session storage for authentication, and vanilla JavaScript for frontend interactivity.
 
-- User authentication (login/register/logout)
-- Session-based login with "Remember Me" support
-- Protected routes and session validation
-- Product (movie) management (Add/Edit/Delete)
-- Responsive UI with vanilla HTML/CSS
-- JSON-based storage (temporarily replacing a real database)
+---
+
+## 🌟 Features
+
+- User registration and login
+- "Remember me" login option (extends session duration)
+- Protected routes (e.g. `/welcome.html`)
+- Logout functionality
+- Add/view/edit/delete products
+- Frontend validation and toasts
+- Backend validation and clear error messages
+- Styled with clean, responsive HTML/CSS
+
+---
+
+## 🔐 Authentication
+
+- Session-based login system using `express-session`
+- "Remember me" option sets cookie expiration to 7 days
+- Redirection based on login status (e.g., logged-in users are redirected from `/auth` to `/welcome.html`)
+
+---
 
 ## 🛠️ Technologies Used
 
@@ -45,6 +64,14 @@ for managing products inside a shopping cart. This project is part of my persona
 Demo login:
     login: userHello / password: userHello
 
+
+## 📌 Dependencies
+
+    - express
+    - express-session
+    - bcrypt
+    - path
+    - fs (for JSON file storage)
 
 ## Folder Structure
 
