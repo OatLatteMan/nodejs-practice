@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('change-password-form');
     const message = document.getElementById('change-password-msg');
 
+    function showToast(msg, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.backgroundColor = isSuccess ? '#4CAF50' : '#f44336'; // green/red
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -11,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 🔒 Simple password length check
             if (newPassword.length < 6) {
-                message.textContent = 'New password must be at least 6 characters long';
-                message.style.color = 'red';
+                showToast('New password must be at least 6 characters long', false);
                 return;
             }
 
@@ -24,11 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const data = await res.json();
-                message.textContent = data.message || data.error;
-                message.style.color = res.ok ? 'green' : 'red';
+                showToast(data.message || data.error, res.ok);
             } catch (err) {
-                message.textContent = 'Something went wrong!';
-                message.style.color = 'red';
+                showToast('Something went wrong!', false);
             }
 
             form.reset();
