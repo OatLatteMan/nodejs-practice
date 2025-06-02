@@ -121,7 +121,10 @@ router.post('/change-password', requireLogin, async (req, res) => {
 // Get current logged-in user
 router.get('/me', (req, res) => {
   if (req.session && req.session.user) {
-    res.json({ loggedInAs: req.session.user.username });
+    res.json({
+      loggedInAs: req.session.user.username,
+      username: req.session.user.username,
+    });
   } else {
     res.status(401).json({ error: 'Not logged in' });
   }

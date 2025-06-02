@@ -15,3 +15,22 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
         alert('Logout error!');
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/auth/me')
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Not logged in');
+      }
+      return res.json();
+    })
+    .then(data => {
+      const profileDiv = document.getElementById('profile');
+      profileDiv.innerHTML = `<p><strong>Logged in as:</strong> ${data.username}</p>`;
+    })
+    .catch(err => {
+      document.getElementById('profile').innerHTML = `<p>Unable to load profile.</p>`;
+      console.error(err);
+    });
+});
+
