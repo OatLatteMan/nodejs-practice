@@ -1,10 +1,6 @@
-document.getElementById('backendSelect')?.addEventListener('change', () => {
-    loadProducts(); // reload products with new backend
-});
-
-
 function getApiBase() {
-    const backend = document.getElementById('backendSelect')?.value || 'fs';
+    const params = new URLSearchParams(window.location.search);
+    const backend = params.get('backend');
     return backend === 'lowdb' ? '/api/lowdb-products' : '/api/products';
 }
 
@@ -182,7 +178,7 @@ async function searchProducts() {
     }
 }
 
-// Event listeners (safe with optional chaining)
+// Event listeners
 document.getElementById('search-button')?.addEventListener('click', searchProducts);
 document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
