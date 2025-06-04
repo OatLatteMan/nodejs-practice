@@ -1,4 +1,7 @@
-const apiBase = '/api/products';
+function getApiBase() {
+    const backend = document.getElementById('backendSelect')?.value || 'fs';
+    return backend === 'lowdb' ? '/api/lowdb-products' : '/api/products';
+}
 
 async function loadProducts() {
     try {
