@@ -53,9 +53,11 @@ app.get('/products', (req, res) => {
 });
 
 // direct json, with it's contains shown
-const productRoutes = require('./routes/productsRoutes');
-//const productRoutes = require('./routes/productsRoutesLowdb')
-app.use('/api/products', productRoutes);
+const productRoutesFs = require('./routes/productsRoutes');
+const productRoutesLowdb = require('./routes/productsRoutesLowdb')
+
+app.use('/api/products-fs', productRoutesFs);
+app.use('/api/products-lowdb', productRoutesLowdb)
 
 // manage products route
 app.get('/manage', (req, res) => {

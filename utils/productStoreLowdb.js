@@ -1,48 +1,58 @@
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
-import path from 'path'
-import { fileURLToPath } from 'url'
+// utils/productStoreLowdb.js
+const { Low } = require('lowdb');
+const { JSONFile } = require('lowdb/node');
+const path = require('path');
 
-// For ESM-style __dirname workaround
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const file = path.join(__dirname, '../data/products.json');
+const adapter = new JSONFile(file);
+const db = new Low(adapter);
 
-// Path to productsLowdb.json
-const file = path.join(__dirname, '../data/productsLowdb.json')
-const adapter = new JSONFile(file)
-const db = new Low(adapter)
-
-// Default structure
-await db.read()
-db.data ||= { products: [] }
-await db.write()
-
-// Get all products
-export async function getProducts() {
-  await db.read()
-  return db.data.products
-}
-
-// Add a new product
-export async function addProduct(product) {
-  await db.read()
-  db.data.products.push(product)
-  await db.write()
-}
-
-// Delete a product by id
-export async function deleteProduct(id) {
-  await db.read()
-  db.data.products = db.data.products.filter(p => p.id !== id)
-  await db.write()
-}
-
-// Update a product by id
-export async function updateProduct(id, newData) {
-  await db.read()
-  const index = db.data.products.findIndex(p => p.id === id)
-  if (index !== -1) {
-    db.data.products[index] = { ...db.data.products[index], ...newData }
-    await db.write()
+// This wrapper is required since our root is a plain array
+async function readDB() {
+  await db.read();
+  if (!Array.isArray(db.data)) {
+    db.data = []; // if the file is empty or has wrong format
   }
 }
+
+module.exports = {
+  async getAllProducts() {
+    await readDB();
+    return db.data;
+  },
+
+  async addProduct(newProduct) {
+    await readDB();
+    db.data.push(newProduct);
+    await db.write();
+  },
+
+  async deleteProduct(productId) {
+    await readDB();
+    db.data = db.data.filter(p => p.id !== productId);
+    await db.write();
+  },
+
+  async updateProduct(updatedProduct) {
+    await readDB();
+    const index = db.data.findIndex(p => p.id === updatedProduct.id);
+    if (index !== -1) {
+      db.data[index] = updatedProduct;
+      await db.write();
+    }
+  },
+
+  async findProductById(id) {
+    await readDB();
+    return db.data.find(p => p.id === id);
+  },
+
+  async searchProducts(query = '', minPrice = 0, maxPrice = Infinity) {
+    await readDB();
+    return db.data.filter(p => {
+      const matchesName = p.name.toLowerCase().includes(query.toLowerCase());
+      const price = parseFloat(p.price);
+      return matchesName && price >= minPrice && price <= maxPrice;
+    });
+  }
+};
