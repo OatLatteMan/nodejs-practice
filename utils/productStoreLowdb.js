@@ -1,58 +1,64 @@
-// utils/productStoreLowdb.js
-const { Low } = require('lowdb');
-const { JSONFile } = require('lowdb/node');
-const path = require('path');
+const { Low } = require('lowdb')
+const { JSONFile } = require('lowdb/node')
+const path = require('path')
 
-const file = path.join(__dirname, '../data/products.json');
-const adapter = new JSONFile(file);
-const db = new Low(adapter);
+const file = path.join(__dirname, '../data/products-lowdb.json') // or 'productsLowdb.json'
+const adapter = new JSONFile(file)
+const db = new Low(adapter)
 
-// This wrapper is required since our root is a plain array
-async function readDB() {
-  await db.read();
-  if (!Array.isArray(db.data)) {
-    db.data = []; // if the file is empty or has wrong format
-  }
+async function init() {
+  await db.read()
+  db.data ||= { products: [] }
+  await db.write()
 }
 
+init() // safe async init
+
 module.exports = {
-  async getAllProducts() {
-    await readDB();
-    return db.data;
+  async getAll() {
+    await db.read()
+    return db.data.products
   },
 
-  async addProduct(newProduct) {
-    await readDB();
-    db.data.push(newProduct);
-    await db.write();
+  async getById(id) {
+    await db.read()
+    return db.data.products.find(p => p.id === id)
   },
 
-  async deleteProduct(productId) {
-    await readDB();
-    db.data = db.data.filter(p => p.id !== productId);
-    await db.write();
+  async add(product) {
+    await db.read()
+    const newId = db.data.products.length ? Math.max(...db.data.products.map(p => p.id)) + 1 : 1
+    const newProduct = { id: newId, ...product }
+    db.data.products.push(newProduct)
+    await db.write()
+    return newProduct
   },
 
-  async updateProduct(updatedProduct) {
-    await readDB();
-    const index = db.data.findIndex(p => p.id === updatedProduct.id);
-    if (index !== -1) {
-      db.data[index] = updatedProduct;
-      await db.write();
-    }
+  async update(id, updated) {
+    await db.read()
+    const index = db.data.products.findIndex(p => p.id === id)
+    if (index === -1) return null
+    db.data.products[index] = { ...db.data.products[index], ...updated }
+    await db.write()
+    return db.data.products[index]
   },
 
-  async findProductById(id) {
-    await readDB();
-    return db.data.find(p => p.id === id);
+  async delete(id) {
+    await db.read()
+    const index = db.data.products.findIndex(p => p.id === id)
+    if (index === -1) return false
+    db.data.products.splice(index, 1)
+    await db.write()
+    return true
   },
 
-  async searchProducts(query = '', minPrice = 0, maxPrice = Infinity) {
-    await readDB();
-    return db.data.filter(p => {
-      const matchesName = p.name.toLowerCase().includes(query.toLowerCase());
-      const price = parseFloat(p.price);
-      return matchesName && price >= minPrice && price <= maxPrice;
-    });
+  async search({ q, minPrice, maxPrice }) {
+    await db.read()
+    return db.data.products.filter(p => {
+      const nameMatch = q ? p.name.toLowerCase().includes(q.toLowerCase()) : true
+      const priceMatch = (!minPrice || p.price >= parseFloat(minPrice)) &&
+                         (!maxPrice || p.price <= parseFloat(maxPrice))
+      return nameMatch && priceMatch
+    })
   }
-};
+}
