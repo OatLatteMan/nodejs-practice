@@ -1,3 +1,8 @@
+document.getElementById('backendSelect')?.addEventListener('change', () => {
+    loadProducts(); // reload products with new backend
+});
+
+
 function getApiBase() {
     const backend = document.getElementById('backendSelect')?.value || 'fs';
     return backend === 'lowdb' ? '/api/lowdb-products' : '/api/products';
@@ -5,7 +10,7 @@ function getApiBase() {
 
 async function loadProducts() {
     try {
-        const res = await fetch(apiBase);
+        const res = await fetch(getApiBase());
         const products = await res.json();
 
         const manageList = document.getElementById('product-list');
@@ -53,7 +58,7 @@ async function addProduct() {
 
     if (!name || isNaN(price)) return showMessage('Please enter valid name and price.', true);
 
-    const res = await fetch(apiBase, {
+    const res = await fetch(getApiBase(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price }),
@@ -73,7 +78,7 @@ async function addProduct() {
 async function deleteProduct(id) {
     if (!confirm(`Delete product ${id}?`)) return;
 
-    const res = await fetch(`${apiBase}/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${getApiBase()}/${id}`, { method: 'DELETE' });
 
     if (res.ok) {
         showMessage('Product deleted successfully!');
@@ -85,7 +90,7 @@ async function deleteProduct(id) {
 }
 
 async function viewProduct(id) {
-    const res = await fetch(`${apiBase}/${id}`);
+    const res = await fetch(`${getApiBase()}/${id}`);
     if (!res.ok) return alert('Product not found');
 
     const product = await res.json();
@@ -106,7 +111,7 @@ async function updateProduct() {
 
     if (isNaN(id) || !name || isNaN(price)) return showMessage('Invalid update input.', true);
 
-    const res = await fetch(`${apiBase}/${id}`, {
+    const res = await fetch(`${getApiBase()}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price }),
@@ -155,7 +160,7 @@ async function searchProducts() {
     if (max) params.append('maxPrice', max);
 
     try {
-        const res = await fetch(`/api/products/search?${params.toString()}`);
+        const res = await fetch(`${getApiBase()}/search?${params.toString()}`);
         const results = await res.json();
 
         if (!res.ok) {
