@@ -2,31 +2,29 @@ const { Low } = require('lowdb')
 const { JSONFile } = require('lowdb/node')
 const path = require('path')
 
-const file = path.join(__dirname, '../data/products-lowdb.json') // or 'productsLowdb.json'
+const file = path.join(__dirname, '../data/productsLowdb.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
-async function init() {
+async function readSafe() {
   await db.read()
   db.data ||= { products: [] }
-  await db.write()
+  console.log("DB after read:", db.data)
 }
-
-init() // safe async init
 
 module.exports = {
   async getAll() {
-    await db.read()
+    await readSafe()
     return db.data.products
   },
 
   async getById(id) {
-    await db.read()
+    await readSafe()
     return db.data.products.find(p => p.id === id)
   },
 
   async add(product) {
-    await db.read()
+    await readSafe()
     const newId = db.data.products.length ? Math.max(...db.data.products.map(p => p.id)) + 1 : 1
     const newProduct = { id: newId, ...product }
     db.data.products.push(newProduct)
@@ -35,7 +33,7 @@ module.exports = {
   },
 
   async update(id, updated) {
-    await db.read()
+    await readSafe()
     const index = db.data.products.findIndex(p => p.id === id)
     if (index === -1) return null
     db.data.products[index] = { ...db.data.products[index], ...updated }
@@ -44,7 +42,7 @@ module.exports = {
   },
 
   async delete(id) {
-    await db.read()
+    await readSafe()
     const index = db.data.products.findIndex(p => p.id === id)
     if (index === -1) return false
     db.data.products.splice(index, 1)
@@ -53,11 +51,11 @@ module.exports = {
   },
 
   async search({ q, minPrice, maxPrice }) {
-    await db.read()
+    await readSafe()
     return db.data.products.filter(p => {
       const nameMatch = q ? p.name.toLowerCase().includes(q.toLowerCase()) : true
       const priceMatch = (!minPrice || p.price >= parseFloat(minPrice)) &&
-                         (!maxPrice || p.price <= parseFloat(maxPrice))
+        (!maxPrice || p.price <= parseFloat(maxPrice))
       return nameMatch && priceMatch
     })
   }
