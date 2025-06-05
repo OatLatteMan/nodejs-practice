@@ -191,5 +191,6 @@ document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
 document.getElementById('refresh-products')?.addEventListener('click', loadProducts);
 document.getElementById('view-button')?.addEventListener('click', handleViewProduct);
+document.getElementById('delete-button')?.addEventListener('click', handleDeleteProduct);
 
 window.addEventListener('DOMContentLoaded', loadProducts);
