@@ -4,6 +4,11 @@
       "id": 1,
       "name": "The usual suspect",
       "price": 189
+    },
+    {
+      "id": 2,
+      "name": "Nigga",
+      "price": 11
     }
   ]
 }
