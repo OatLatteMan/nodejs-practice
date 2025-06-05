@@ -1,12 +1,20 @@
-function getApiBase() {
-    const params = new URLSearchParams(window.location.search);
-    const backend = params.get('backend');
-    return backend === 'lowdb' ? '/api/lowdb-products' : '/api/products';
+document.getElementById('backendSelect')?.addEventListener('change', () => {
+    loadProducts();
+});
+
+function getApiPrefix() {
+    return document.getElementById('backendSelect')?.value || 'products-fs';
+}
+
+function buildUrl(path = '', query = {}) {
+    const prefix = getApiPrefix(); // 'products' or 'lowdb-products'
+    const params = new URLSearchParams(query).toString();
+    return `/api/${prefix}${path}${params ? '?' + params : ''}`;
 }
 
 async function loadProducts() {
     try {
-        const res = await fetch(getApiBase());
+        const res = await fetch(buildUrl());
         const products = await res.json();
 
         const manageList = document.getElementById('product-list');
@@ -17,11 +25,11 @@ async function loadProducts() {
             products.forEach(product => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-          <strong>${product.name}</strong> - $${product.price}
-          <button onclick="viewProduct(${product.id})">View</button>
-          <button onclick="editProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
-          <button onclick="deleteProduct(${product.id})">Delete</button>
-        `;
+                    <strong>${product.name}</strong> - $${product.price}
+                    <button onclick="viewProduct(${product.id})">View</button>
+                    <button onclick="editProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
+                    <button onclick="deleteProduct(${product.id})">Delete</button>
+                `;
                 manageList.appendChild(li);
             });
         }
@@ -54,7 +62,7 @@ async function addProduct() {
 
     if (!name || isNaN(price)) return showMessage('Please enter valid name and price.', true);
 
-    const res = await fetch(getApiBase(), {
+    const res = await fetch(buildUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price }),
@@ -74,7 +82,7 @@ async function addProduct() {
 async function deleteProduct(id) {
     if (!confirm(`Delete product ${id}?`)) return;
 
-    const res = await fetch(`${getApiBase()}/${id}`, { method: 'DELETE' });
+    const res = await fetch(buildUrl(`/${id}`), { method: 'DELETE' });
 
     if (res.ok) {
         showMessage('Product deleted successfully!');
@@ -86,7 +94,7 @@ async function deleteProduct(id) {
 }
 
 async function viewProduct(id) {
-    const res = await fetch(`${getApiBase()}/${id}`);
+    const res = await fetch(buildUrl(`/${id}`));
     if (!res.ok) return alert('Product not found');
 
     const product = await res.json();
@@ -107,7 +115,7 @@ async function updateProduct() {
 
     if (isNaN(id) || !name || isNaN(price)) return showMessage('Invalid update input.', true);
 
-    const res = await fetch(`${getApiBase()}/${id}`, {
+    const res = await fetch(buildUrl(`/${id}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price }),
@@ -150,13 +158,13 @@ async function searchProducts() {
     const resultList = document.getElementById('search-results');
     resultList.innerHTML = '';
 
-    const params = new URLSearchParams();
-    if (query) params.append('q', query);
-    if (min) params.append('minPrice', min);
-    if (max) params.append('maxPrice', max);
+    const searchParams = {};
+    if (query) searchParams.q = query;
+    if (min) searchParams.minPrice = min;
+    if (max) searchParams.maxPrice = max;
 
     try {
-        const res = await fetch(`${getApiBase()}/search?${params.toString()}`);
+        const res = await fetch(buildUrl('/search', searchParams));
         const results = await res.json();
 
         if (!res.ok) {
@@ -178,12 +186,10 @@ async function searchProducts() {
     }
 }
 
-// Event listeners
 document.getElementById('search-button')?.addEventListener('click', searchProducts);
 document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
 document.getElementById('refresh-products')?.addEventListener('click', loadProducts);
 document.getElementById('view-button')?.addEventListener('click', handleViewProduct);
 
-// Load products on page load
 window.addEventListener('DOMContentLoaded', loadProducts);

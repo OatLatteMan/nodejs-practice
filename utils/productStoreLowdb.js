@@ -17,7 +17,7 @@ async function init() {
   await db.read()
   console.log("📄 DB read:", db.data)
 
-  db.data = db.data || { products: [] }
+  db.data ||= { products: [] };
   await db.write()
   console.log("✅ DB initialized and written")
 }
