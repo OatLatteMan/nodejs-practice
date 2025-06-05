@@ -25,7 +25,7 @@ async function init() {
 init()
 
 module.exports = {
-  async getAll() {
+  async getProducts() {
     await db.read()
     return db.data.products
   },
@@ -35,7 +35,7 @@ module.exports = {
     return db.data.products.find(p => p.id === id)
   },
 
-  async add(product) {
+  async addProduct(product) {
     await db.read()
     const newId = db.data.products.length ? Math.max(...db.data.products.map(p => p.id)) + 1 : 1
     const newProduct = { id: newId, ...product }
@@ -53,7 +53,7 @@ module.exports = {
     return db.data.products[index]
   },
 
-  async delete(id) {
+  async deleteProduct(id) {
     await db.read()
     const index = db.data.products.findIndex(p => p.id === id)
     if (index === -1) return false

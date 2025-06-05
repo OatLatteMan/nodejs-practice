@@ -1,3 +1,9 @@
 {
-  "products": []
+  "products": [
+    {
+      "id": 1,
+      "name": "The usual suspect",
+      "price": 189
+    }
+  ]
 }
