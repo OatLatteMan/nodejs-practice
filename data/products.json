@@ -50,18 +50,13 @@
     "price": 21
   },
   {
-    "id": 1747777959073,
-    "name": "A water",
-    "price": 29
-  },
-  {
-    "id": 1748642317167,
-    "name": "RAM 8gb 2pcs",
-    "price": 199
-  },
-  {
     "id": 1749082767298,
-    "name": "The usual suspect",
+    "name": "The usual sus",
     "price": 189
+  },
+  {
+    "id": 1749248604274,
+    "name": "Cheese dip",
+    "price": 39
   }
 ]

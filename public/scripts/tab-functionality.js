@@ -1,7 +1,7 @@
 // Tab functionality
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
-        const selectedTab = button.getAttribute('data-tab');
+        const selectedTab = button.getAttribute('aria-controls');
 
         // Update active button
         document.querySelectorAll('.tab-button').forEach(btn => {
@@ -14,10 +14,12 @@ document.querySelectorAll('.tab-button').forEach(button => {
         });
 
         // Fade in selected tab
-        const newTab = document.getElementById(`tab-${selectedTab}`);
+        const newTab = document.getElementById(selectedTab);
         setTimeout(() => newTab.classList.add('active'), 10); // slight delay to trigger transition
     });
+});
 
+document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('keydown', e => {
         const tabs = Array.from(document.querySelectorAll('.tab-button'));
         const index = tabs.indexOf(button);
@@ -28,3 +30,8 @@ document.querySelectorAll('.tab-button').forEach(button => {
         }
     });
 });
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('tab-add-btn').click();
+});
+

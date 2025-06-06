@@ -21,17 +21,27 @@
 }
 
 .tab-content {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-  max-height: 0;
-  overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease, max-height 0.4s ease;
+    max-height: 0;
+    overflow: hidden;
+
+    /* New additions */
+    position: relative;
+    margin: 0;
+    padding: 1rem 0;
+    /* optional: keeps spacing consistent */
+    top: 0;
+    left: 0;
 }
 
+
 .tab-content.active {
-  opacity: 1;
-  visibility: visible;
-  max-height: 1000px; /* enough to reveal content */
+    opacity: 1;
+    visibility: visible;
+    max-height: 600px;
+    /* enough to reveal content */
 }
 
 ul {
