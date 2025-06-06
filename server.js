@@ -24,6 +24,7 @@ const PORT = 2089;
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));
 
 console.log('SESSION_SECRET is:', process.env.SESSION_SECRET);
 
@@ -40,7 +41,6 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Protected welcome route
 app.get('/welcome.html', (req, res) => {
