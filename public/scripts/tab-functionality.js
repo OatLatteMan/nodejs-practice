@@ -17,4 +17,14 @@ document.querySelectorAll('.tab-button').forEach(button => {
         const newTab = document.getElementById(`tab-${selectedTab}`);
         setTimeout(() => newTab.classList.add('active'), 10); // slight delay to trigger transition
     });
+
+    button.addEventListener('keydown', e => {
+        const tabs = Array.from(document.querySelectorAll('.tab-button'));
+        const index = tabs.indexOf(button);
+        if (e.key === 'ArrowRight') {
+            tabs[(index + 1) % tabs.length].focus();
+        } else if (e.key === 'ArrowLeft') {
+            tabs[(index - 1 + tabs.length) % tabs.length].focus();
+        }
+    });
 });
