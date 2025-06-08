@@ -1,3 +1,42 @@
+// Layout toggle logic
+document.querySelectorAll('input[name="layoutMode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        const layout = document.querySelector('input[name="layoutMode"]:checked').value;
+        document.body.setAttribute('data-layout', layout);
+
+        if (layout === 'accordion') {
+            setupAccordionBehavior();
+        } else {
+            restoreTabBehavior();
+        }
+    });
+});
+
+function setupAccordionBehavior() {
+    document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.remove('active');
+        section.classList.add('collapsed');
+
+        const header = section.querySelector('h3');
+        if (header) {
+            header.style.cursor = 'pointer';
+            header.onclick = () => {
+                section.classList.toggle('collapsed');
+            };
+        }
+    });
+
+    document.querySelector('.tab-content')?.classList.remove('collapsed');
+}
+
+
+
+function restoreTabBehavior() {
+    // Show the first tab again
+    document.querySelector('.tab-button.active')?.click();
+}
+
+
 // Tab functionality
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
@@ -32,6 +71,6 @@ document.querySelectorAll('.tab-button').forEach(button => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('tab-add-btn').click();
+    document.getElementById('tab-add-btn').click();
 });
 
