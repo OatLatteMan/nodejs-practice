@@ -1,4 +1,5 @@
 // Layout toggle logic
+
 document.querySelectorAll('input[name="layoutMode"]').forEach(radio => {
     radio.addEventListener('change', () => {
         const layout = document.querySelector('input[name="layoutMode"]:checked').value;
