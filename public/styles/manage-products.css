@@ -117,8 +117,12 @@ body[data-layout="accordion"] .tab-content {
     cursor: pointer;
 }
 
-body[data-layout="accordion"] .tab-content.collapsed>*:not(h3) {
+body[data-layout="accordion"] .tab-content.collapsed > *:not(h3) {
     display: none;
+}
+
+body[data-layout="accordion"] .tab-content:not(.collapsed) > *:not(h3) {
+    display: block; /* 👈 THIS is what was missing */
 }
 
 body[data-layout="tabs"] .tab-content:not(.active) {
