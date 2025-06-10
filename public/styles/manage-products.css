@@ -125,14 +125,13 @@ body[data-layout="tabs"] .tab-content {
     display: none;
 }
 
+body[data-layout="tabs"] .tab-content.active {
+    display: block;
+}
+
 /* Hide all tab-content unless it has .active */
 body[data-layout="tabs"] .tab-content:not(.active) {
     display: none;
-}
-
-
-body[data-layout="tabs"] .tab-content.active {
-    display: block;
 }
 
 /* Accordion layout */

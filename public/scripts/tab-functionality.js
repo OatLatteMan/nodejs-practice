@@ -83,6 +83,45 @@ document.querySelectorAll('.tab-button').forEach(button => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('tab-add-btn').click();
+    document.getElementById('tab-search-btn').click();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const layout = body.dataset.layout;
+    const tabButtons = document.querySelectorAll('.tabs button');
+    const tabSections = document.querySelectorAll('.tab-content');
+
+    // ✅ TABS MODE ONLY
+    if (layout === 'tabs') {
+        // Make sure only one .tab-content has "active"
+        let anyActive = false;
+        tabSections.forEach(section => {
+            if (section.classList.contains('active')) {
+                anyActive = true;
+            } else {
+                section.style.display = 'none'; // Hide others just in case
+            }
+        });
+
+        // If none is active, activate the first one
+        if (!anyActive && tabSections.length > 0) {
+            tabSections[0].classList.add('active');
+            tabSections[0].style.display = 'block';
+        }
+
+        // Handle tab button clicks
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.tab;
+
+                tabSections.forEach(section => {
+                    const isMatch = section.dataset.tab === target;
+                    section.classList.toggle('active', isMatch);
+                    section.style.display = isMatch ? 'block' : 'none';
+                });
+            });
+        });
+    }
 });
 
