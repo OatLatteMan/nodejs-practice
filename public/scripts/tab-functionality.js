@@ -1,5 +1,20 @@
-// Layout toggle logic
+// Ensure initial layout mode is respected
+document.addEventListener('DOMContentLoaded', () => {
+    const layout = document.querySelector('input[name="layoutMode"]:checked')?.value || 'tabs';
+    document.body.setAttribute('data-layout', layout);
 
+    if (layout === 'accordion') {
+        setupAccordionBehavior();
+    } else {
+        restoreTabBehavior();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('tab-all-btn').click();
+});
+
+// Layout toggle logic
 document.querySelectorAll('input[name="layoutMode"]').forEach(radio => {
     radio.addEventListener('change', () => {
         const layout = document.querySelector('input[name="layoutMode"]:checked').value;
@@ -23,12 +38,6 @@ function setupAccordionBehavior() {
             header.style.cursor = 'pointer';
             header.onclick = () => {
                 section.classList.toggle('collapsed');
-
-                // Optional: rotate arrow
-                const arrow = header.querySelector('.arrow');
-                if (arrow) {
-                    arrow.textContent = section.classList.contains('collapsed') ? '▶' : '▶';
-                }
             };
         }
     });
@@ -38,7 +47,7 @@ function setupAccordionBehavior() {
     if (firstSection) {
         firstSection.classList.remove('collapsed');
         const arrow = firstSection.querySelector('.arrow');
-        if (arrow) arrow.textContent = '▼';
+        if (arrow) arrow.textContent = '▶';
     }
 }
 
@@ -80,10 +89,6 @@ document.querySelectorAll('.tab-button').forEach(button => {
             tabs[(index - 1 + tabs.length) % tabs.length].focus();
         }
     });
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('tab-search-btn').click();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
