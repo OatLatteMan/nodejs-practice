@@ -20,13 +20,6 @@
     color: white;
 }
 
-.tab-content {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    padding: 1rem 0;
-}
-
 .tab-content.active {
     display: block;
     opacity: 1;
@@ -102,10 +95,6 @@ button {
     margin-bottom: 1rem;
 }
 
-body[data-layout="accordion"] .tabs {
-    display: none;
-}
-
 /* body[data-layout="accordion"] .tab-content {
     opacity: 1 !important;
     visibility: visible !important;
@@ -116,11 +105,8 @@ body[data-layout="accordion"] .tabs {
     cursor: pointer;
 } */
 
-body[data-layout="tabs"] .tab-content:not(.active) {
-    display: none;
-}
-
-body[data-layout="accordion"] .tab-content {
+/* General styles (shared) */
+.tab-content {
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -128,34 +114,68 @@ body[data-layout="accordion"] .tab-content {
     transition: all 0.3s ease;
 }
 
-body[data-layout="accordion"] .tab-content h3 {
-    background: linear-gradient(to right, #eaeaea, #d5d5d5);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    font-size: 1.1rem;
-    margin: 0;
-    padding: 1rem;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-weight: bold;
-    position: relative;
+/* Tabs layout */
+body[data-layout="tabs"] .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
-body[data-layout="accordion"] .tab-content:not(.collapsed)>*:not(h3) {
-    display: block;
-    /* 👈 THIS is what was missing */
-}
-
-body[data-layout="accordion"] .tab-content.collapsed>*:not(h3) {
+body[data-layout="tabs"] .tab-content {
     display: none;
 }
 
-body[data-layout="accordion"] .arrow {
-    float: right;
-    transition: transform 0.3s ease;
+/* Hide all tab-content unless it has .active */
+body[data-layout="tabs"] .tab-content:not(.active) {
+    display: none;
 }
 
+
+body[data-layout="tabs"] .tab-content.active {
+    display: block;
+}
+
+/* Accordion layout */
+body[data-layout="accordion"] .tabs {
+    display: none;
+}
+
+body[data-layout="accordion"] .tab-content {
+    display: block;
+    padding: 0;
+}
+
+body[data-layout="accordion"] .tab-content h3 {
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Arrow inside header */
+body[data-layout="accordion"] .arrow {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+/* Rotate arrow when section is open */
 body[data-layout="accordion"] .tab-content:not(.collapsed) .arrow {
     transform: rotate(90deg);
-    /* pointing down */
+}
+
+/* Hide everything inside except <h3> when collapsed */
+body[data-layout="accordion"] .tab-content.collapsed > *:not(h3) {
+    display: none;
+}
+
+body[data-layout="accordion"] .tab-content:not(.collapsed) > *:not(h3) {
+    display: block;
+    padding: 1rem;
 }
