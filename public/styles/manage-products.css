@@ -20,11 +20,6 @@
     color: white;
 }
 
-.tab-content.active {
-    display: block;
-    opacity: 1;
-}
-
 ul {
     list-style: none;
     padding: 0;
@@ -95,17 +90,6 @@ button {
     margin-bottom: 1rem;
 }
 
-/* body[data-layout="accordion"] .tab-content {
-    opacity: 1 !important;
-    visibility: visible !important;
-    max-height: none !important;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    cursor: pointer;
-} */
-
-/* General styles (shared) */
 .tab-content {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -117,8 +101,6 @@ button {
 /* Tabs layout */
 body[data-layout="tabs"] .tabs {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
 }
 
 body[data-layout="tabs"] .tab-content {
@@ -127,11 +109,6 @@ body[data-layout="tabs"] .tab-content {
 
 body[data-layout="tabs"] .tab-content.active {
     display: block;
-}
-
-/* Hide all tab-content unless it has .active */
-body[data-layout="tabs"] .tab-content:not(.active) {
-    display: none;
 }
 
 /* Accordion layout */
@@ -169,7 +146,7 @@ body[data-layout="accordion"] .tab-content:not(.collapsed) .arrow {
     transform: rotate(90deg);
 }
 
-/* Hide everything inside except <h3> when collapsed */
+/* Collapse content below header */
 body[data-layout="accordion"] .tab-content.collapsed > *:not(h3) {
     display: none;
 }
