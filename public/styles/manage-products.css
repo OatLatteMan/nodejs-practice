@@ -32,7 +32,6 @@
     opacity: 1;
 }
 
-
 ul {
     list-style: none;
     padding: 0;
@@ -104,10 +103,10 @@ button {
 }
 
 body[data-layout="accordion"] .tabs {
-    display: block !important;
+    display: none;
 }
 
-body[data-layout="accordion"] .tab-content {
+/* body[data-layout="accordion"] .tab-content {
     opacity: 1 !important;
     visibility: visible !important;
     max-height: none !important;
@@ -115,12 +114,48 @@ body[data-layout="accordion"] .tab-content {
     border: 1px solid #ccc;
     padding: 1rem;
     cursor: pointer;
-}
-
-body[data-layout="accordion"] .tab-content:not(.collapsed) > *:not(h3) {
-    display: block; /* 👈 THIS is what was missing */
-}
+} */
 
 body[data-layout="tabs"] .tab-content:not(.active) {
     display: none;
+}
+
+body[data-layout="accordion"] .tab-content {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+body[data-layout="accordion"] .tab-content h3 {
+    background: linear-gradient(to right, #eaeaea, #d5d5d5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 1rem;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: bold;
+    position: relative;
+}
+
+body[data-layout="accordion"] .tab-content:not(.collapsed)>*:not(h3) {
+    display: block;
+    /* 👈 THIS is what was missing */
+}
+
+body[data-layout="accordion"] .tab-content.collapsed>*:not(h3) {
+    display: none;
+}
+
+body[data-layout="accordion"] .arrow {
+    float: right;
+    transition: transform 0.3s ease;
+}
+
+body[data-layout="accordion"] .tab-content:not(.collapsed) .arrow {
+    transform: rotate(90deg);
+    /* pointing down */
 }

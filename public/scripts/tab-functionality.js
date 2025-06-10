@@ -19,17 +19,29 @@ function setupAccordionBehavior() {
         section.classList.add('collapsed');
 
         const header = section.querySelector('h3');
-        if (header && !header.dataset.accordionInit) {
+        if (header) {
             header.style.cursor = 'pointer';
-            header.addEventListener('click', () => {
+            header.onclick = () => {
                 section.classList.toggle('collapsed');
-            });
-            header.dataset.accordionInit = 'true';
+
+                // Optional: rotate arrow
+                const arrow = header.querySelector('.arrow');
+                if (arrow) {
+                    arrow.textContent = section.classList.contains('collapsed') ? '▶' : '▶';
+                }
+            };
         }
     });
 
-    document.querySelector('.tab-content')?.classList.remove('collapsed');
+    // Expand the first section by default
+    const firstSection = document.querySelector('.tab-content');
+    if (firstSection) {
+        firstSection.classList.remove('collapsed');
+        const arrow = firstSection.querySelector('.arrow');
+        if (arrow) arrow.textContent = '▼';
+    }
 }
+
 
 function restoreTabBehavior() {
     // Show the first tab again
