@@ -95,6 +95,7 @@ button {
     border-radius: 8px;
     margin-bottom: 1rem;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 /* Tabs layout */
@@ -103,13 +104,10 @@ body[data-layout="tabs"] .tabs {
 }
 
 body[data-layout="tabs"] .tab-content {
-    max-height: 0;
-    transition: max-height 0.3s ease;
     display: none;
 }
 
 body[data-layout="tabs"] .tab-content.active {
-    max-height: 500px;
     display: block;
 }
 
@@ -119,8 +117,13 @@ body[data-layout="accordion"] .tabs {
 }
 
 body[data-layout="accordion"] .tab-content {
-    display: block;
-    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+body[data-layout="accordion"] .tab-section.active .tab-content {
+    /* No max-height here — it's set dynamically in JS */
 }
 
 body[data-layout="accordion"] .tab-content h3 {
@@ -149,11 +152,11 @@ body[data-layout="accordion"] .tab-content:not(.collapsed) .arrow {
 }
 
 /* Collapse content below header */
-body[data-layout="accordion"] .tab-content.collapsed > *:not(h3) {
+body[data-layout="accordion"] .tab-content.collapsed>*:not(h3) {
     display: none;
 }
 
-body[data-layout="accordion"] .tab-content:not(.collapsed) > *:not(h3) {
+body[data-layout="accordion"] .tab-content:not(.collapsed)>*:not(h3) {
     display: block;
     padding: 1rem;
 }

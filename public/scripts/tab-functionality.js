@@ -28,22 +28,65 @@ function setLayoutMode(mode) {
 }
 
 function setupAccordionBehavior() {
-    document.querySelectorAll('.tab-content').forEach(section => {
+    const headers = document.querySelectorAll('.tab-header');
+
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const section = header.parentElement;
+            const content = section.querySelector('.tab-content');
+            const isExpanded = section.classList.contains('active');
+
+            if (isExpanded) {
+                collapseSection(section, content);
+            } else {
+                // Collapse other sections first
+                document.querySelectorAll('.tab-section.active').forEach(otherSection => {
+                    if (otherSection !== section) {
+                        collapseSection(otherSection, otherSection.querySelector('.tab-content'));
+                    }
+                });
+
+                expandSection(section, content);
+            }
+        });
+    });
+
+    function expandSection(section, content) {
+        content.style.display = 'block';
+        const height = content.scrollHeight + 'px';
+
+        content.style.maxHeight = '0px'; // reset to animate from 0
+        requestAnimationFrame(() => {
+            content.style.maxHeight = height;
+        });
+
+        section.classList.remove('collapsed');
+        section.classList.add('active');
+
+        // Remove inline max-height after transition
+        content.addEventListener('transitionend', function handler() {
+            content.style.maxHeight = 'none';
+            content.removeEventListener('transitionend', handler);
+        });
+    }
+
+    function collapseSection(section, content) {
+        const height = content.scrollHeight + 'px';
+        content.style.maxHeight = height;
+
+        requestAnimationFrame(() => {
+            content.style.maxHeight = '0px';
+        });
+
         section.classList.add('collapsed');
         section.classList.remove('active');
 
-        const header = section.querySelector('h3');
-        if (header) {
-            header.onclick = () => {
-                section.classList.toggle('collapsed');
-            };
-        }
-    });
-
-    // Expand the first section by default
-    const first = document.querySelector('.tab-content');
-    if (first) {
-        first.classList.remove('collapsed');
+        // Hide the content after the transition
+        content.addEventListener('transitionend', function handler() {
+            content.style.display = 'none';
+            content.style.maxHeight = '';
+            content.removeEventListener('transitionend', handler);
+        });
     }
 }
 
