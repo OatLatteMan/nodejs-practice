@@ -98,6 +98,10 @@ button {
     transition: all 0.3s ease;
 }
 
+.tab-section {
+    margin-bottom: 1rem;
+}
+
 /* Tabs layout */
 body[data-layout="tabs"] .tabs {
     display: flex;
