@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show default tab (only meaningful for tabs)
     if (layout === 'tabs') {
-        document.getElementById('tab-all-btn').click();
+        document.getElementById('tab-search-btn').click();
     }
 });
 

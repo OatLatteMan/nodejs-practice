@@ -95,7 +95,6 @@ button {
     border-radius: 8px;
     margin-bottom: 1rem;
     overflow: hidden;
-    transition: all 0.3s ease;
 }
 
 /* Tabs layout */
@@ -104,10 +103,13 @@ body[data-layout="tabs"] .tabs {
 }
 
 body[data-layout="tabs"] .tab-content {
+    max-height: 0;
+    transition: max-height 0.3s ease;
     display: none;
 }
 
 body[data-layout="tabs"] .tab-content.active {
+    max-height: 500px;
     display: block;
 }
 
