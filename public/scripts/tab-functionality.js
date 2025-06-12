@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    renderTabSections();
+
     const savedTheme = localStorage.getItem('theme') || 'light';
     const layout = document.querySelector('input[name="layoutMode"]:checked')?.value || 'tabs';
 
@@ -32,10 +34,34 @@ const tabSections = [
         sourceId: 'tab-add-content'
     },
     {
+        id: 'tab-update',
+        icon: '🛠️',
+        label: 'Update Product',
+        sourceId: 'tab-update-content'
+    },
+    {
         id: 'tab-manage',
         icon: '🛠️',
         label: 'Manage Products',
         sourceId: 'tab-manage-content'
+    },
+    {
+        id: 'tab-view',
+        icon: '🛠️',
+        label: 'View Product',
+        sourceId: 'tab-view-content'
+    },
+    {
+        id: 'tab-delete',
+        icon: '🛠️',
+        label: 'Delete Product',
+        sourceId: 'tab-delete-content'
+    },
+    {
+        id: 'tab-all',
+        icon: '🛠️',
+        label: 'All Products',
+        sourceId: 'tab-all-content'
     }
 ];
 
