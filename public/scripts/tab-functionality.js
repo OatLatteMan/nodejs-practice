@@ -18,6 +18,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const tabSections = [
+    {
+        id: 'tab-search',
+        icon: '🔍',
+        label: 'Search Products',
+        sourceId: 'tab-search-content'
+    },
+    {
+        id: 'tab-add',
+        icon: '➕',
+        label: 'Add Product',
+        sourceId: 'tab-add-content'
+    },
+    {
+        id: 'tab-manage',
+        icon: '🛠️',
+        label: 'Manage Products',
+        sourceId: 'tab-manage-content'
+    }
+];
+
+function renderTabSections() {
+    const container = document.getElementById('tab-sections');
+    container.innerHTML = '';
+
+    tabSections.forEach(({ id, icon, label, sourceId }) => {
+        const source = document.getElementById(sourceId);
+        if (!source) return;
+
+        const contentHTML = source.innerHTML;
+
+        container.insertAdjacentHTML('beforeend', `
+      <div class="tab-section">
+        <div class="tab-title" id="${id}-btn" aria-controls="${id}">
+          <span>${icon} ${label}</span> <span class="arrow">▶</span>
+        </div>
+        <div class="tab-content" id="${id}">
+          ${contentHTML}
+        </div>
+      </div>
+    `);
+    });
+}
+
+
 function setTheme(theme) {
     if (theme === 'dark') {
         document.body.classList.add('dark');
