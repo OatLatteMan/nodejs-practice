@@ -21,73 +21,71 @@ function setLayoutMode(mode) {
     if (mode === 'accordion') {
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
         setupAccordionBehavior();
+
+        // ✅ Now expand the first accordion section
+        const sections = document.querySelectorAll('.tab-section');
+        if (sections.length > 0) {
+            const firstSection = sections[0];
+            const firstContent = firstSection.querySelector('.tab-content');
+
+            // Make sure it's visible
+            firstContent.style.display = 'block';
+
+            // Trigger expansion
+            requestAnimationFrame(() => {
+                firstContent.style.maxHeight = firstContent.scrollHeight + 'px';
+            });
+
+            firstSection.classList.remove('collapsed');
+            firstSection.classList.add('active');
+        }
     } else {
         restoreTabBehavior();
-        document.getElementById('tab-all-btn').click();
+        document.getElementById('tab-search-btn').click();
     }
 }
 
+
 function setupAccordionBehavior() {
-  const headers = document.querySelectorAll('.tab-header');
+    const sections = document.querySelectorAll('.tab-section');
 
-  headers.forEach(header => {
-    header.addEventListener('click', () => {
-      const section = header.parentElement;
-      const content = section.querySelector('.tab-content');
-      const isExpanded = section.classList.contains('active');
+    sections.forEach(section => {
+        const title = section.querySelector('.tab-title');
+        const content = section.querySelector('.tab-content');
 
-      if (isExpanded) {
-        collapseSection(section, content);
-      } else {
-        // Collapse other sections first
-        document.querySelectorAll('.tab-section.active').forEach(otherSection => {
-          if (otherSection !== section) {
-            collapseSection(otherSection, otherSection.querySelector('.tab-content'));
-          }
+        // Reset everything first
+        content.style.display = 'none';
+        content.style.maxHeight = '';
+        section.classList.add('collapsed');
+        section.classList.remove('active');
+
+        // Prevent duplicate listeners
+        const newTitle = title.cloneNode(true);
+        title.parentNode.replaceChild(newTitle, title);
+
+        // Bind click to toggle section
+        newTitle.addEventListener('click', () => {
+            const isExpanded = section.classList.contains('active');
+
+            // Collapse all first
+            sections.forEach(s => {
+                const c = s.querySelector('.tab-content');
+                c.style.maxHeight = '';
+                c.style.display = 'none';
+                s.classList.remove('active');
+                s.classList.add('collapsed');
+            });
+
+            if (!isExpanded) {
+                content.style.display = 'block';
+                requestAnimationFrame(() => {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                });
+                section.classList.add('active');
+                section.classList.remove('collapsed');
+            }
         });
-
-        expandSection(section, content);
-      }
     });
-  });
-
-  function expandSection(section, content) {
-    content.style.display = 'block';
-    const height = content.scrollHeight + 'px';
-
-    content.style.maxHeight = '0px'; // reset to animate from 0
-    requestAnimationFrame(() => {
-      content.style.maxHeight = height;
-    });
-
-    section.classList.remove('collapsed');
-    section.classList.add('active');
-
-    // Remove inline max-height after transition
-    content.addEventListener('transitionend', function handler() {
-      content.style.maxHeight = 'none';
-      content.removeEventListener('transitionend', handler);
-    });
-  }
-
-  function collapseSection(section, content) {
-    const height = content.scrollHeight + 'px';
-    content.style.maxHeight = height;
-
-    requestAnimationFrame(() => {
-      content.style.maxHeight = '0px';
-    });
-
-    section.classList.add('collapsed');
-    section.classList.remove('active');
-
-    // Hide the content after the transition
-    content.addEventListener('transitionend', function handler() {
-      content.style.display = 'none';
-      content.style.maxHeight = '';
-      content.removeEventListener('transitionend', handler);
-    });
-  }
 }
 
 function restoreTabBehavior() {

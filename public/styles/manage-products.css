@@ -107,7 +107,15 @@ body[data-layout="tabs"] .tabs {
     display: flex;
 }
 
+body[data-layout="tabs"] .tab-title {
+    display: none;
+}
+
 body[data-layout="tabs"] .tab-content {
+    display: none;
+}
+
+body[data-layout="tabs"] .arrow {
     display: none;
 }
 
@@ -126,41 +134,40 @@ body[data-layout="accordion"] .tab-content {
     transition: max-height 0.3s ease;
 }
 
-body[data-layout="accordion"] .tab-section.active .tab-content {
-    /* No max-height here — it's set dynamically in JS */
+body[data-layout="accordion"] .tab-section {
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+    overflow: hidden;
+    border-radius: 4px;
 }
 
-body[data-layout="accordion"] .tab-content h3 {
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 1rem;
+body[data-layout="accordion"] .tab-section .tab-title {
+    padding: 12px 16px;
+    background-color: #f1f1f1;
     cursor: pointer;
     font-weight: bold;
-    position: relative;
-    border-bottom: 1px solid #ccc;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+body[data-layout="accordion"] .tab-section .tab-content {
+    padding: 12px 16px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    display: none;
 }
 
 /* Arrow inside header */
-body[data-layout="accordion"] .arrow {
+body[data-layout="accordion"] .tab-section .tab-title .arrow {
     transition: transform 0.3s ease;
     font-size: 1.2rem;
 }
 
 /* Rotate arrow when section is open */
-body[data-layout="accordion"] .tab-content:not(.collapsed) .arrow {
+body[data-layout="accordion"] .tab-section .tab-title:not(.collapsed) .arrow {
     transform: rotate(90deg);
 }
 
-/* Collapse content below header */
-body[data-layout="accordion"] .tab-content.collapsed>*:not(h3) {
-    display: none;
-}
-
-body[data-layout="accordion"] .tab-content:not(.collapsed)>*:not(h3) {
-    display: block;
-    padding: 1rem;
+body[data-layout="accordion"] .tab-header {
+    display: hidden;
 }
