@@ -1,12 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
     const layout = document.querySelector('input[name="layoutMode"]:checked')?.value || 'tabs';
+
+    setTheme(savedTheme);
     setLayoutMode(layout);
 
     // Show default tab (only meaningful for tabs)
     if (layout === 'tabs') {
         document.getElementById('tab-search-btn').click();
     }
+
+    document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        const newTheme = isDark ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        updateThemeButtonText(newTheme);
+    });
 });
+
+function setTheme(theme) {
+    if (theme === 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+    updateThemeButtonText(theme);
+}
+
+function updateThemeButtonText(theme) {
+    const btn = document.getElementById('theme-toggle-btn');
+    btn.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+}
 
 document.querySelectorAll('input[name="layoutMode"]').forEach(radio => {
     radio.addEventListener('change', () => {
