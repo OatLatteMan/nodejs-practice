@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const savedTheme = localStorage.getItem('theme') || 'light';
     const layout = document.querySelector('input[name="layoutMode"]:checked')?.value || 'tabs';
 
