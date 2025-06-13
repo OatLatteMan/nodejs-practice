@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    renderTabSections();
 
     const savedTheme = localStorage.getItem('theme') || 'light';
     const layout = document.querySelector('input[name="layoutMode"]:checked')?.value || 'tabs';
@@ -19,75 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateThemeButtonText(newTheme);
     });
 });
-
-const tabSections = [
-    {
-        id: 'tab-search',
-        icon: '🔍',
-        label: 'Search Products',
-        sourceId: 'tab-search-content'
-    },
-    {
-        id: 'tab-add',
-        icon: '➕',
-        label: 'Add Product',
-        sourceId: 'tab-add-content'
-    },
-    {
-        id: 'tab-update',
-        icon: '🛠️',
-        label: 'Update Product',
-        sourceId: 'tab-update-content'
-    },
-    {
-        id: 'tab-manage',
-        icon: '🛠️',
-        label: 'Manage Products',
-        sourceId: 'tab-manage-content'
-    },
-    {
-        id: 'tab-view',
-        icon: '🛠️',
-        label: 'View Product',
-        sourceId: 'tab-view-content'
-    },
-    {
-        id: 'tab-delete',
-        icon: '🛠️',
-        label: 'Delete Product',
-        sourceId: 'tab-delete-content'
-    },
-    {
-        id: 'tab-all',
-        icon: '🛠️',
-        label: 'All Products',
-        sourceId: 'tab-all-content'
-    }
-];
-
-function renderTabSections() {
-    const container = document.getElementById('tab-sections');
-    container.innerHTML = '';
-
-    tabSections.forEach(({ id, icon, label, sourceId }) => {
-        const source = document.getElementById(sourceId);
-        if (!source) return;
-
-        const contentHTML = source.innerHTML;
-
-        container.insertAdjacentHTML('beforeend', `
-      <div class="tab-section">
-        <div class="tab-title" id="${id}-btn" aria-controls="${id}">
-          <span>${icon} ${label}</span> <span class="arrow">▶</span>
-        </div>
-        <div class="tab-content" id="${id}">
-          ${contentHTML}
-        </div>
-      </div>
-    `);
-    });
-}
-
 
 function setTheme(theme) {
     if (theme === 'dark') {
