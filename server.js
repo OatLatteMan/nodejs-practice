@@ -1,8 +1,3 @@
-// something went off and I can't start the server by
-// "node server.js" command. I'll try fixing that tomorrow
-// so wish me a good luck, please
-// I'll also prepare a "README" file for both projects
-
 import dotenv from 'dotenv';
 dotenv.config();
 
