@@ -15,11 +15,15 @@ This is a simple full-stack Node.js application that allows users to register, l
 - User registration and login
 - "Remember me" login option (extends session duration)
 - Protected routes (e.g. `/welcome.html`)
+- Change password functionality for logged-in users
 - Logout functionality
 - Add/view/edit/delete products
 - Frontend validation and toasts
 - Backend validation and clear error messages
-- Styled with clean, responsive HTML/CSS
+- Clean, responsive HTML/CSS with dark/light theme toggle
+- Tab and accordion layout toggle on product management page
+- Backend switcher (fs/promises ⬌ lowdb) via dropdown
+- Modular and refactored frontend code (`manage.js`, `tab-functionality.js`)
 
 ---
 
@@ -27,7 +31,9 @@ This is a simple full-stack Node.js application that allows users to register, l
 
 - Session-based login system using `express-session`
 - "Remember me" option sets cookie expiration to 7 days
-- Redirection based on login status (e.g., logged-in users are redirected from `/auth` to `/welcome.html`)
+- Redirects users to `/welcome.html` if already logged in
+- Supports password change (while logged in)
+- Logout clears the session properly
 
 ---
 
@@ -39,6 +45,9 @@ This is a simple full-stack Node.js application that allows users to register, l
 - HTML5 / CSS3
 - `express-session` for session management
 - bcrypt for password hashing
+- `lowdb` for JSON-based database alternative
+
+---
 
 ## 🚀 Getting Started
 
@@ -78,6 +87,8 @@ Demo login:
 📦 project-root
 
     ┣ 📂 public/              # Static files (HTML, CSS, client JS)
+    ┣ 📂 data/                # JSON data
+    ┣ 📂 middleware/          # Helper functions
     ┣ 📂 routes/              # Express routes
     ┣ 📂 utils/               # Utility functions and storage
     ┣ 📜 server.js            # Main server file
