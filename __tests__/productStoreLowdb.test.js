@@ -3,13 +3,22 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { getProducts, addProduct, getById, update, deleteProduct, search } from './utils/productStoreLowdb.js'
 import fs from 'fs/promises'
 import path from 'path'
+import { db } from '../utils/productStoreLowdb.js'
+
 
 const testDataPath = path.resolve('./data/productsLowdb.json')
 
 // Reset the file before each test
 beforeEach(async () => {
+    db.data.products = []
+    await db.write()
     await fs.writeFile(testDataPath, JSON.stringify({ products: [] }, null, 2))
 })
+
+
+// beforeEach(async () => {
+//     await fs.writeFile(testDataPath, JSON.stringify({ products: [] }, null, 2))
+// })
 
 describe('productStoreLowdb', () => {
     it('adds and gets a product by ID', async () => {
@@ -45,5 +54,33 @@ describe('productStoreLowdb', () => {
         const results = await search({ q: 'a', minPrice: 5, maxPrice: 15 })
         expect(results.length).toBe(1)
         expect(results[0].name).toBe('Apple')
+    })
+
+    it('returns undefined for non-existent ID', async () => {
+        const result = await getById(999)
+        expect(result).toBeUndefined()
+    })
+
+    it('returns null when updating a non-existent product', async () => {
+        const result = await update(999, { name: 'Nothing' })
+        expect(result).toBeNull()
+    })
+
+    it('returns false when trying to delete non-existent product', async () => {
+        const result = await deleteProduct(999)
+        expect(result).toBe(false)
+    })
+
+    it('returns all products if no search filters are given', async () => {
+        await addProduct({ name: 'Alpha', price: 30 })
+        await addProduct({ name: 'Beta', price: 50 })
+        const results = await search({})
+        expect(results.length).toBe(2)
+    })
+
+    it('returns empty array if no search matches', async () => {
+        await addProduct({ name: 'Orange', price: 5 })
+        const results = await search({ q: 'xyz', minPrice: 100 })
+        expect(results).toEqual([])
     })
 })

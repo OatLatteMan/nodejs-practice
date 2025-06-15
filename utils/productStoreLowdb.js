@@ -3,31 +3,21 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
-console.log("⏳ Loading productStoreLowdb.js...")
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-
 const file = path.join(__dirname, '../data/productsLowdb.json')
-console.log("✅ JSON file path resolved:", file)
-
 const adapter = new JSONFile(file)
-console.log("✅ Adapter created")
-
 const db = new Low(adapter)
-console.log("✅ LowDB instance created")
 
 async function init() {
-  console.log("🚀 init() started...")
   await db.read()
-  console.log("📄 DB read:", db.data)
-
   db.data ||= { products: [] };
   await db.write()
-  console.log("✅ DB initialized and written")
 }
 
 init()
+
+export { db }
 
 export async function getProducts() {
   await db.read()
