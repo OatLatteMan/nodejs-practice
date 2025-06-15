@@ -12,13 +12,11 @@ const testDataPath = path.resolve('./data/productsLowdb.json')
 beforeEach(async () => {
     db.data.products = []
     await db.write()
-    await fs.writeFile(testDataPath, JSON.stringify({ products: [] }, null, 2))
 })
 
-
-// beforeEach(async () => {
-//     await fs.writeFile(testDataPath, JSON.stringify({ products: [] }, null, 2))
-// })
+beforeEach(async () => {
+    await fs.writeFile(testDataPath, JSON.stringify({ products: [] }, null, 2))
+})
 
 describe('productStoreLowdb', () => {
     it('adds and gets a product by ID', async () => {
