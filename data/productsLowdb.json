@@ -9,6 +9,11 @@
       "id": 3,
       "name": "Kentucky Fried Chicken",
       "price": 129
+    },
+    {
+      "id": 4,
+      "name": "Iced tea latte",
+      "price": 149
     }
   ]
 }
