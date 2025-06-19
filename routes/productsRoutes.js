@@ -5,7 +5,7 @@ const path = require('path');
 const router = express.Router();
 const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
 
-// Helper: Read products from file
+// Helper function: Read products from file
 async function readProductsFromFile() {
   const fileData = await fs.readFile(dataFilePath, 'utf-8');
   return JSON.parse(fileData);
