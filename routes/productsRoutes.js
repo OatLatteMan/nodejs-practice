@@ -1,9 +1,14 @@
-const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
+import express from 'express'
+import fs from 'fs/promises'
+import path from 'path';
 import upload from '../utils/imageUpload.js';
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
 
 // Helper function: Read products from file
@@ -38,7 +43,6 @@ router.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to search products' });
   }
 });
-
 
 router.get('/', async (req, res) => {
   try {
@@ -146,4 +150,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router

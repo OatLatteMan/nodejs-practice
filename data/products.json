@@ -40,13 +40,15 @@
     "price": 119
   },
   {
-    "id": 1749082767298,
-    "name": "The usual sus",
-    "price": 189
+    "id": 1750716021854,
+    "name": "English rohlik with ham and cheese",
+    "price": 24,
+    "image": null
   },
   {
-    "id": 1749510125240,
-    "name": "Skoda Fabia 2009 1.6",
-    "price": 6000
+    "id": 1750719002709,
+    "name": "Test Product",
+    "price": "99.99",
+    "image": "/uploads/image-1750719002706-763177170.jpeg"
   }
 ]
