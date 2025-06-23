@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+import upload from '../utils/imageUpload.js';
 
 const router = express.Router();
 const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
@@ -49,8 +50,9 @@ router.get('/', async (req, res) => {
 });
 
 // POST a new product
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   const { name, price } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
 
   if (!name || !price) {
     return res.status(400).json({ error: 'Name and price are required' });
@@ -63,7 +65,8 @@ router.post('/', async (req, res) => {
     const newProduct = {
       id: Date.now(),
       name,
-      price
+      price,
+      image
     };
 
     products.push(newProduct);
@@ -92,12 +95,13 @@ router.get('/:id', async (req, res) => {
 });
 
 // ✅ PUT (update) product by ID
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
   try {
     const fileData = await fs.readFile(dataFilePath, 'utf-8');
     const products = JSON.parse(fileData);
 
     const productIndex = products.findIndex(p => p.id == req.params.id);
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (productIndex === -1) {
       return res.status(404).json({ error: 'Product not found' });
@@ -105,6 +109,10 @@ router.put('/:id', async (req, res) => {
 
     const updatedData = req.body;
     products[productIndex] = { ...products[productIndex], ...updatedData };
+
+    if (image) {
+      updatedProduct.image = image;
+    }
 
     await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
     res.json({ message: 'Product updated', product: products[productIndex] });

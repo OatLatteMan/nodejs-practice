@@ -102,3 +102,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Express server running at http://localhost:${PORT}`);
 });
+
+app.use('/uploads', express.static(path.resolve('uploads')));
