@@ -115,7 +115,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
     products[productIndex] = { ...products[productIndex], ...updatedData };
 
     if (image) {
-      updatedProduct.image = image;
+      products[productIndex].image = image;
     }
 
     await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
