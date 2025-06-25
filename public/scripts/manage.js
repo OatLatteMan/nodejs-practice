@@ -59,6 +59,7 @@ function showMessage(msg, isError = false) {
 async function addProduct() {
     const name = document.getElementById('add-name')?.value.trim();
     const price = parseFloat(document.getElementById('add-price')?.value);
+    const imageFile = document.getElementById('add-image')?.files[0];
 
     if (!name || isNaN(price)) return showMessage('Please enter valid name and price.', true);
 
