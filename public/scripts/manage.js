@@ -63,16 +63,21 @@ async function addProduct() {
 
     if (!name || isNaN(price)) return showMessage('Please enter valid name and price.', true);
 
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    if (imageFile) formData.append('image', imageFile);
+
     const res = await fetch(buildUrl(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, price }),
+        body: formData,
     });
 
     if (res.ok) {
         showMessage('Product added!');
         document.getElementById('add-name').value = '';
         document.getElementById('add-price').value = '';
+        document.getElementById('add-image').balue = '';
         loadProducts();
     } else {
         const err = await res.json();
@@ -113,13 +118,18 @@ async function updateProduct() {
     const id = parseInt(document.getElementById('update-id')?.value);
     const name = document.getElementById('update-name')?.value.trim();
     const price = parseFloat(document.getElementById('update-price')?.value);
+    const imageFile = document.getElementById('update-image')?.files[0];
 
     if (isNaN(id) || !name || isNaN(price)) return showMessage('Invalid update input.', true);
 
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    if (imageFile) formData.append('image', imageFile);
+
     const res = await fetch(buildUrl(`/${id}`), {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, price }),
+        body: formData,
     });
 
     if (res.ok) {
@@ -127,6 +137,7 @@ async function updateProduct() {
         document.getElementById('update-id').value = '';
         document.getElementById('update-name').value = '';
         document.getElementById('update-price').value = '';
+        document.getElementById('update-image').value = '';
         loadProducts();
     } else {
         const err = await res.json();
