@@ -50,5 +50,11 @@
     "name": "Test Product",
     "price": "99.99",
     "image": "/uploads/image-1750719002706-763177170.jpeg"
+  },
+  {
+    "id": 1750887348844,
+    "name": "Spicy python sauce",
+    "price": "99",
+    "image": "/uploads/image-1750887348841-414772954.jpeg"
   }
 ]

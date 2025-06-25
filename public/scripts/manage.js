@@ -26,6 +26,7 @@ async function loadProducts() {
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <strong>${product.name}</strong> - $${product.price}
+                    ${product.imageUrl ? `<img src="/uploads/${product.imageFile}" alt="Product Image" />` : ''}
                     <button onclick="viewProduct(${product.id})">View</button>
                     <button onclick="editProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
                     <button onclick="deleteProduct(${product.id})">Delete</button>
@@ -104,7 +105,7 @@ async function viewProduct(id) {
     if (!res.ok) return alert('Product not found');
 
     const product = await res.json();
-    alert(`Name: ${product.name}\nPrice: $${product.price}`);
+    alert(`Name: ${product.name}\nPrice: $${product.price}\nImage: ${product.imageUrl}`);
 }
 
 function editProduct(id, name, price) {
