@@ -78,7 +78,7 @@ async function addProduct() {
         showMessage('Product added!');
         document.getElementById('add-name').value = '';
         document.getElementById('add-price').value = '';
-        document.getElementById('add-image').balue = '';
+        document.getElementById('add-image').value = '';
         loadProducts();
     } else {
         const err = await res.json();
@@ -105,7 +105,15 @@ async function viewProduct(id) {
     if (!res.ok) return alert('Product not found');
 
     const product = await res.json();
-    alert(`Name: ${product.name}\nPrice: $${product.price}\nImage: ${product.imageUrl}`);
+
+    let html = `<strong>ID:</strong> ${product.id}<br>
+                <strong>Name:</strong> ${product.name}<br>
+                <strong>Price:</strong> ${product.price}<br>`;
+    if (product.image) {
+        html += `<img src="${product.image}" alt="Product Image" style="max-width: 200px; margin-top: 10px;" />`;
+    }
+
+    document.getElementById('viewResult').innerHTML = html;
 }
 
 function editProduct(id, name, price) {
