@@ -26,7 +26,7 @@ async function loadProducts() {
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <strong>${product.name}</strong> - $${product.price}
-                    ${product.imageUrl ? `<img src="/uploads/${product.imageFile}" alt="Product Image" />` : ''}
+                    ${product.image ? `<img src="/uploads/${product.image}" alt="Product Image" />` : ''}
                     <button onclick="viewProduct(${product.id})">View</button>
                     <button onclick="editProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
                     <button onclick="deleteProduct(${product.id})">Delete</button>
