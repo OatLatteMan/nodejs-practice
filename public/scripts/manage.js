@@ -26,7 +26,7 @@ async function loadProducts() {
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <strong>${product.name}</strong> - $${product.price}
-                    ${product.image ? `<img src="/uploads/${product.image}" alt="Product Image" />` : ''}
+                    ${product.image ? `<img src="${product.image}" alt="Product Image" />` : ''}
                     <button onclick="viewProduct(${product.id})">View</button>
                     <button onclick="editProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
                     <button onclick="deleteProduct(${product.id})">Delete</button>
@@ -39,7 +39,7 @@ async function loadProducts() {
             allList.innerHTML = '';
             products.forEach(p => {
                 const li = document.createElement('li');
-                li.textContent = `ID: ${p.id} — ${p.name} ($${p.price})`;
+                li.textContent = `ID: ${p.id} — ${p.name} ($${p.price}) `;
                 allList.appendChild(li);
             });
         }
