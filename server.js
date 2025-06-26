@@ -19,6 +19,7 @@ const PORT = 2089;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 console.log('SESSION_SECRET is:', process.env.SESSION_SECRET);
 
@@ -102,5 +103,3 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Express server running at http://localhost:${PORT}`);
 });
-
-app.use('/uploads', express.static(path.resolve('uploads')));
