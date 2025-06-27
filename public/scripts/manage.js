@@ -200,7 +200,9 @@ async function searchProducts() {
         } else {
             results.forEach(p => {
                 const li = document.createElement('li');
-                li.textContent = `ID: ${p.id} — ${p.name} ($${p.price})`;
+                li.innerHTML = `
+                ${p.image ? `<img src="${p.image}" alt="Product Image" style="max-height: 25px; position: relative; max-width: 25px; top: 6px;" />` : ''}
+                ID: ${p.id} — ${p.name} ($${p.price})`;
                 resultList.appendChild(li);
             });
         }

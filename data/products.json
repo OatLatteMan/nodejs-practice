@@ -25,28 +25,28 @@
     "price": 89
   },
   {
-    "id": 1746740517840,
+    "id": 6,
     "name": "Spurs shirt",
     "price": 199
   },
   {
-    "id": 1747587692133,
+    "id": 7,
     "name": "Caramel Macciato",
     "price": 139
   },
   {
-    "id": 1747587704983,
+    "id": 8,
     "name": "Foccacia Roma",
     "price": 119
   },
   {
-    "id": 1750716021854,
+    "id": 9,
     "name": "English rohlik with ham and cheese",
     "price": 24,
     "image": null
   },
   {
-    "id": 1750971358608,
+    "id": 10,
     "name": "Gym pass",
     "price": "76",
     "image": "/uploads/image-1750971358238-319444595.jpeg"
