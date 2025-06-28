@@ -1,0 +1,22 @@
+[
+  {
+    "start": 0,
+    "end": 2,
+    "text": "Camera 1 active",
+    "x": "(w-text_w)/2",
+    "y": "50",
+    "fontcolor": "yellow",
+    "fontsize": 30,
+    "fade": true
+  },
+  {
+    "start": 4,
+    "end": 7,
+    "text": "🚨 Motion detected!",
+    "x": "20",
+    "y": "(h-text_h)-30",
+    "fontcolor": "red",
+    "fontsize": 36,
+    "fade": false
+  }
+]
