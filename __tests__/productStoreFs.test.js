@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import fs from 'fs/promises';
 import path from 'path';
-import * as store from '../utils/productStore.js'; // <-- adjust path if needed
+import * as store from '../routes/productsRoutes.js'; // <-- adjust path if needed
 
 const DATA_FILE = path.resolve('data/products.json');
 
