@@ -1,12 +1,12 @@
 // productStoreLowdb.test.js
 import { describe, it, expect, beforeEach } from 'vitest'
-import { getProducts, addProduct, getById, update, deleteProduct, search } from './utils/productStoreLowdb.js'
+import { getProducts, addProduct, getById, update, deleteProduct, search } from '../utils/productStoreLowdb.js'
 import fs from 'fs/promises'
 import path from 'path'
 import { db } from '../utils/productStoreLowdb.js'
 
 
-const testDataPath = path.resolve('./data/productsLowdb.json')
+const testDataPath = path.resolve('../data/productsLowdb.json')
 
 // Reset the file before each test
 beforeEach(async () => {

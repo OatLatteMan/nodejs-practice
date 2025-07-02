@@ -1,153 +1,60 @@
-import express from 'express'
-import fs from 'fs/promises'
-import path from 'path';
+import express from 'express';
 import upload from '../utils/imageUpload.js';
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+import {
+  getProducts,
+  getById,
+  addProduct,
+  update,
+  deleteProduct
+} from '../utils/productStoreFs.js'; // 👈 new import
 
 const router = express.Router();
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
-
-// Helper function: Read products from file
-async function readProductsFromFile() {
-  const fileData = await fs.readFile(dataFilePath, 'utf-8');
-  return JSON.parse(fileData);
-}
-
-// GET /api/products/search?q=keyword
-router.get('/search', async (req, res) => {
-  const query = req.query.q?.toLowerCase() || '';
-  const minPrice = parseFloat(req.query.minPrice);
-  const maxPrice = parseFloat(req.query.maxPrice);
-
-  try {
-    const products = await readProductsFromFile();
-
-    const matchedProducts = products.filter(p => {
-      const nameMatches = p.name.toLowerCase().includes(query);
-      const price = parseFloat(p.price); // still good practice
-
-      const priceMatches =
-        (isNaN(minPrice) || price >= minPrice) &&
-        (isNaN(maxPrice) || price <= maxPrice);
-
-      return nameMatches && priceMatches;
-    });
-
-    res.json(matchedProducts);
-  } catch (err) {
-    console.error('Error reading products:', err);
-    res.status(500).json({ error: 'Failed to search products' });
-  }
-});
-
+// ✅ GET all
 router.get('/', async (req, res) => {
   try {
-    const products = await readProductsFromFile();
+    const products = await getProducts();
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: 'Failed to load products' });
   }
 });
 
-// POST a new product
+// ✅ GET by ID
+router.get('/:id', async (req, res) => {
+  const product = await getById(req.params.id);
+  if (!product) return res.status(404).json({ error: 'Not found' });
+  res.json(product);
+});
+
+// ✅ POST new
 router.post('/', upload.single('image'), async (req, res) => {
   const { name, price } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
-
   if (!name || !price) {
-    return res.status(400).json({ error: 'Name and price are required' });
+    return res.status(400).json({ error: 'Name and price required' });
   }
-
-  try {
-    const fileData = await fs.readFile(dataFilePath, 'utf-8');
-    const products = JSON.parse(fileData);
-
-    const newProduct = {
-      id: Date.now(),
-      name,
-      price,
-      image
-    };
-
-    products.push(newProduct);
-
-    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
-    res.status(201).json(newProduct);
-  } catch (error) {
-    console.error('Error writing file:', error);
-    res.status(500).json({ error: 'Failed to save product' });
-  }
+  const newProduct = await addProduct({ name, price, image });
+  res.status(201).json(newProduct);
 });
 
-// ✅ GET product by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const products = await readProductsFromFile();
-    const product = products.find(p => p.id == req.params.id);
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-    res.json(product);
-  } catch (err) {
-    console.error('Error loading product:', err);
-    res.status(500).json({ error: 'Failed to load product' });
-  }
-});
-
-// ✅ PUT (update) product by ID
+// ✅ PUT update
 router.put('/:id', upload.single('image'), async (req, res) => {
-  try {
-    const fileData = await fs.readFile(dataFilePath, 'utf-8');
-    const products = JSON.parse(fileData);
-
-    const productIndex = products.findIndex(p => p.id == req.params.id);
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
-
-    if (productIndex === -1) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    const updatedData = req.body;
-    products[productIndex] = { ...products[productIndex], ...updatedData };
-
-    if (image) {
-      products[productIndex].image = image;
-    }
-
-    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
-    res.json({ message: 'Product updated', product: products[productIndex] });
-
-  } catch (err) {
-    console.error('Error updating product:', err);
-    res.status(500).json({ error: 'Failed to update product' });
-  }
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+  const updated = await update({
+    id: req.params.id,
+    ...req.body,
+    ...(image && { image })
+  });
+  if (!updated) return res.status(404).json({ error: 'Not found' });
+  res.json({ message: 'Updated', product: updated });
 });
 
-// ✅ DELETE product by ID
+// ✅ DELETE
 router.delete('/:id', async (req, res) => {
-  try {
-    const fileData = await fs.readFile(dataFilePath, 'utf-8');
-    const products = JSON.parse(fileData);
-
-    const productIndex = products.findIndex(p => p.id == req.params.id);
-
-    if (productIndex === -1) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    const deleted = products.splice(productIndex, 1)[0];
-
-    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
-    res.json({ message: 'Product deleted', product: deleted });
-
-  } catch (err) {
-    console.error('Error deleting product:', err);
-    res.status(500).json({ error: 'Failed to delete product' });
-  }
+  const result = await deleteProduct(req.params.id);
+  if (!result) return res.status(404).json({ error: 'Not found' });
+  res.json({ message: 'Deleted' });
 });
 
-export default router
+export default router;

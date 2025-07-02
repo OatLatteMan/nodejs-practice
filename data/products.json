@@ -1,54 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Laptop",
-    "price": 999
-  },
-  {
-    "id": 2,
-    "name": "Smartphone",
-    "price": 799
-  },
-  {
-    "id": 3,
-    "name": "White Keyboard",
-    "price": 799
-  },
-  {
-    "id": 4,
-    "name": "Choco cake",
-    "price": 99
-  },
-  {
-    "id": 5,
-    "name": "Red grape",
-    "price": 89
-  },
-  {
-    "id": 6,
-    "name": "Spurs shirt",
-    "price": 199
-  },
-  {
-    "id": 7,
-    "name": "Caramel Macciato",
-    "price": 139
-  },
-  {
-    "id": 8,
-    "name": "Foccacia Roma",
-    "price": 119
-  },
-  {
-    "id": 9,
-    "name": "English rohlik with ham and cheese",
-    "price": 24,
-    "image": null
-  },
-  {
-    "id": 10,
-    "name": "Gym pass",
-    "price": "76",
-    "image": "/uploads/image-1750971358238-319444595.jpeg"
+    "name": "Test Product A",
+    "price": 10
   }
 ]
