@@ -15,6 +15,17 @@ export async function getProducts() {
     return JSON.parse(fileData);
 }
 
+// 🔑 search product by name or min/max price
+// export async function search() {
+//     const products = await getProducts();
+//     return products.filter(p => {
+//         const nameMatch = q ? p.name.toLowerCase().includes(q.toLowerCase()) : true
+//         const priceMatch = (!minPrice || p.price >= parseFloat(minPrice)) &&
+//             (!maxPrice || p.price <= parseFloat(maxPrice))
+//         return nameMatch && priceMatch
+//     })
+// }
+
 // 🔑 get by ID
 export async function getById(id) {
     const products = await getProducts();

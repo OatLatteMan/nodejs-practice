@@ -7,7 +7,7 @@ const DATA_FILE = path.resolve('../data/products.json');
 
 const seedData = [
     { id: 1, name: 'Test Product A', price: 10 },
-    { id: 2, name: 'Test Product B', price: 20 }
+    { id: 2, name: 'Test Product B', price: 20 },
 ];
 
 beforeEach(async () => {
