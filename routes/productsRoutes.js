@@ -1,63 +1,52 @@
 import express from 'express';
-import upload from '../utils/imageUpload.js';
-import {
-  getProducts,
-  getById,
-  addProduct,
-  update,
-  deleteProduct
-} from '../utils/productStoreFs.js'; // 👈 new import
+import { createStore } from '../utils/productStoreFs.js';
 
 const router = express.Router();
+const store = createStore();
 
-// ✅ GET all
+// ✅ GET search
+router.get('/search', async (req, res) => {
+  const results = await store.search(req.query);
+  res.json(results);
+});
+
+// ✅ GET all products
 router.get('/', async (req, res) => {
-  try {
-    const products = await getProducts();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to load products' });
-  }
+  const products = await store.getProducts();
+  res.json(products);
 });
 
 // ✅ GET by ID
 router.get('/:id', async (req, res) => {
-  const product = await getById(req.params.id);
+  const id = Number(req.params.id);
+  const product = await store.getById(id);
   if (!product) return res.status(404).json({ error: 'Not found' });
   res.json(product);
 });
 
-// ✅ POST new
-router.post('/', upload.single('image'), async (req, res) => {
-  const { name, price } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : null;
-  if (!name || !price) {
-    return res.status(400).json({ error: 'Name and price required' });
-  }
-  const newProduct = await addProduct({ name, price, image });
+// ✅ POST add new product
+router.post('/', async (req, res) => {
+  const newProduct = await store.addProduct(req.body);
   res.status(201).json(newProduct);
 });
 
-// ✅ PUT update
-router.put('/:id', upload.single('image'), async (req, res) => {
-  const image = req.file ? `/uploads/${req.file.filename}` : null;
-  const updated = await update({
-    id: req.params.id,
-    ...req.body,
-    ...(image && { image })
-  });
-  if (!updated) return res.status(404).json({ error: 'Not found' });
-  res.json({ message: 'Updated', product: updated });
+// ✅ PUT update product
+router.put('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const updatedData = { id, ...req.body };
+  try {
+    const updatedProduct = await store.update(updatedData);
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(404).json({ error: 'Not found' });
+  }
 });
 
-// ✅ DELETE
+// ✅ DELETE product
 router.delete('/:id', async (req, res) => {
-  const result = await deleteProduct(req.params.id);
-  if (!result) return res.status(404).json({ error: 'Not found' });
-  res.json({ message: 'Deleted' });
+  const id = Number(req.params.id);
+  await store.deleteProduct(id);
+  res.status(204).end();
 });
-
-// ✅ Search
-
 
 export default router;

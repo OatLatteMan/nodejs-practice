@@ -1,13 +1,20 @@
+// productStoreFs.test.js
 import { describe, it, expect, beforeEach } from 'vitest';
 import fs from 'fs/promises';
 import path from 'path';
-import * as store from '../utils/productStoreFs.js'; // <-- adjust path if needed
+import { createStore } from '../utils/productStoreFs.js';
 
-const DATA_FILE = path.resolve('../data/products.json');
+beforeEach(async () => {
+  await fs.mkdir('./__tests__/__testdata__', { recursive: true });
+  await fs.writeFile(DATA_FILE, JSON.stringify(seedData, null, 2));
+});
+
+const DATA_FILE = path.resolve('./__tests__/__testdata__/products.test.json');
+const store = createStore(DATA_FILE);
 
 const seedData = [
     { id: 1, name: 'Test Product A', price: 10 },
-    { id: 2, name: 'Test Product B', price: 20 },
+    { id: 2, name: 'Test Product B', price: 20 }
 ];
 
 beforeEach(async () => {
