@@ -1,70 +1,69 @@
+// utils/productStoreFs.js (example)
+
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const defaultFilePath = path.resolve('./data/products.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const dataFilePath = path.join(__dirname, '..', 'data', 'products.json');
 
-export function createStore(filePath = defaultFilePath) {
-  const dataFilePath = filePath;
+// 🔑 get all products
+export async function getProducts() {
+    const fileData = await fs.readFile(dataFilePath, 'utf-8');
+    return JSON.parse(fileData);
+}
 
-  async function readProductsFromFile() {
-    try {
-      const data = await fs.readFile(dataFilePath, 'utf-8');
-      return JSON.parse(data);
-    } catch (err) {
-      if (err.code === 'ENOENT') return [];
-      throw err;
-    }
-  }
+// 🔑 search product by name or min/max price
+// export async function search() {
+//     const products = await getProducts();
+//     return products.filter(p => {
+//         const nameMatch = q ? p.name.toLowerCase().includes(q.toLowerCase()) : true
+//         const priceMatch = (!minPrice || p.price >= parseFloat(minPrice)) &&
+//             (!maxPrice || p.price <= parseFloat(maxPrice))
+//         return nameMatch && priceMatch
+//     })
+// }
 
-  async function writeProductsToFile(products) {
+// 🔑 get by ID
+export async function getById(id) {
+    const products = await getProducts();
+    return products.find(p => p.id == id);
+}
+
+// 🔑 add product
+export async function addProduct({ name, price, image = null }) {
+    const products = await getProducts();
+    const newProduct = {
+        id: Date.now(),
+        name,
+        price,
+        image
+    };
+    products.push(newProduct);
     await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
-  }
+    return newProduct;
+}
 
-  return {
-    async getProducts() {
-      return readProductsFromFile();
-    },
+// 🔑 update product
+export async function update({ id, ...updates }) {
+    const products = await getProducts();
+    const index = products.findIndex(p => p.id == id);
+    if (index === -1) return null;
 
-    async getById(id) {
-      const products = await readProductsFromFile();
-      return products.find(p => p.id === id);
-    },
+    products[index] = { ...products[index], ...updates };
+    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
+    return products[index];
+}
 
-    async addProduct(product) {
-      const products = await readProductsFromFile();
-      const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-      const newProduct = { id: newId, ...product };
-      products.push(newProduct);
-      await writeProductsToFile(products);
-      return newProduct;
-    },
+// 🔑 delete product
+export async function deleteProduct(id) {
+    const products = await getProducts();
+    const index = products.findIndex(p => p.id == id);
+    if (index === -1) return false;
 
-    async update(updatedProduct) {
-      const products = await readProductsFromFile();
-      const index = products.findIndex(p => p.id === updatedProduct.id);
-      if (index === -1) throw new Error('Product not found');
-      products[index] = { ...products[index], ...updatedProduct };
-      await writeProductsToFile(products);
-      return products[index];
-    },
-
-    async deleteProduct(id) {
-      const products = await readProductsFromFile();
-      const newProducts = products.filter(p => p.id !== id);
-      await writeProductsToFile(newProducts);
-    },
-
-    async search(query) {
-      const { name, minPrice, maxPrice } = query;
-      const products = await readProductsFromFile();
-      return products.filter(p => {
-        const matchesName = name
-          ? p.name.toLowerCase().includes(name.toLowerCase())
-          : true;
-        const matchesMin = minPrice ? p.price >= Number(minPrice) : true;
-        const matchesMax = maxPrice ? p.price <= Number(maxPrice) : true;
-        return matchesName && matchesMin && matchesMax;
-      });
-    },
-  };
+    products.splice(index, 1);
+    await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2));
+    return true;
 }

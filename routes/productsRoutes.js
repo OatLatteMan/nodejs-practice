@@ -1,63 +1,63 @@
 import express from 'express';
-import { createStore } from '../utils/productStoreFs.js';
-import multer from 'multer';
-const upload = multer({ dest: 'uploads/' });
+import upload from '../utils/imageUpload.js';
+import {
+  getProducts,
+  getById,
+  addProduct,
+  update,
+  deleteProduct
+} from '../utils/productStoreFs.js'; // 👈 new import
 
 const router = express.Router();
-const store = createStore();
 
-// ✅ GET search
-router.get('/search', async (req, res) => {
-  const results = await store.search(req.query);
-  res.json(results);
-});
-
-// ✅ GET all products
+// ✅ GET all
 router.get('/', async (req, res) => {
-  const products = await store.getProducts();
-  res.json(products);
+  try {
+    const products = await getProducts();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load products' });
+  }
 });
 
 // ✅ GET by ID
 router.get('/:id', async (req, res) => {
-  const id = Number(req.params.id);
-  const product = await store.getById(id);
+  const product = await getById(req.params.id);
   if (!product) return res.status(404).json({ error: 'Not found' });
   res.json(product);
 });
 
-// ✅ POST add new product
+// ✅ POST new
 router.post('/', upload.single('image'), async (req, res) => {
-  console.log('Body:', req.body); // name & price
-  console.log('File:', req.file); // the uploaded file info
-
-  const newProduct = {
-    name: req.body.name,
-    price: parseFloat(req.body.price),
-    image: req.file ? req.file.filename : null, // store filename or path
-  };
-
-  const savedProduct = await store.addProduct(newProduct);
-  res.status(201).json(savedProduct);
-});
-
-// ✅ PUT update product
-router.put('/:id', upload.single('image'), async (req, res) => {
-  const id = Number(req.params.id);
-  const updatedData = { id, ...req.body };
-  try {
-    const updatedProduct = await store.update(updatedData);
-    res.json(updatedProduct);
-  } catch (err) {
-    res.status(404).json({ error: 'Not found' });
+  const { name, price } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+  if (!name || !price) {
+    return res.status(400).json({ error: 'Name and price required' });
   }
+  const newProduct = await addProduct({ name, price, image });
+  res.status(201).json(newProduct);
 });
 
-// ✅ DELETE product
-router.delete('/:id', async (req, res) => {
-  const id = Number(req.params.id);
-  await store.deleteProduct(id);
-  res.status(204).end();
+// ✅ PUT update
+router.put('/:id', upload.single('image'), async (req, res) => {
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+  const updated = await update({
+    id: req.params.id,
+    ...req.body,
+    ...(image && { image })
+  });
+  if (!updated) return res.status(404).json({ error: 'Not found' });
+  res.json({ message: 'Updated', product: updated });
 });
+
+// ✅ DELETE
+router.delete('/:id', async (req, res) => {
+  const result = await deleteProduct(req.params.id);
+  if (!result) return res.status(404).json({ error: 'Not found' });
+  res.json({ message: 'Deleted' });
+});
+
+// ✅ Search
+
 
 export default router;

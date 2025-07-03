@@ -22,6 +22,12 @@
   {
     "id": 5,
     "name": "fifth",
-    "price": "50"
+    "price": "505"
+  },
+  {
+    "id": 1751584291357,
+    "name": "sixth",
+    "price": "60",
+    "image": "/uploads/image-1751584291346-538966961.jpeg"
   }
 ]
