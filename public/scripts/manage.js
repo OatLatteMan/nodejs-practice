@@ -123,16 +123,19 @@ function editProduct(id, name, price) {
     document.getElementById('update-id').value = id;
     document.getElementById('update-name').value = name;
     document.getElementById('update-price').value = price;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Optional: switch to Update tab automatically
+    document.getElementById('tab-update-btn')?.click();
 }
 
 async function updateProduct() {
-    const id = parseInt(document.getElementById('update-id')?.value);
+    const id = document.getElementById('update-id')?.value;
     const name = document.getElementById('update-name')?.value.trim();
     const price = parseFloat(document.getElementById('update-price')?.value);
     const imageFile = document.getElementById('update-image')?.files[0];
 
-    if (isNaN(id) || !name || isNaN(price)) return showMessage('Invalid update input.', true);
+    if (!id) return showMessage('No product selected for update.', true);
+    if (!name || isNaN(price)) return showMessage('Please enter valid name and price.', true);
 
     const formData = new FormData();
     formData.append('name', name);
@@ -146,6 +149,7 @@ async function updateProduct() {
 
     if (res.ok) {
         showMessage('Product updated!');
+        // Clear fields
         document.getElementById('update-id').value = '';
         document.getElementById('update-name').value = '';
         document.getElementById('update-price').value = '';
@@ -218,5 +222,6 @@ document.getElementById('update-button')?.addEventListener('click', updateProduc
 document.getElementById('refresh-products')?.addEventListener('click', loadProducts);
 document.getElementById('view-button')?.addEventListener('click', handleViewProduct);
 document.getElementById('delete-button')?.addEventListener('click', handleDeleteProduct);
+document.getElementById('update-button')?.addEventListener('click', updateProduct);
 
 window.addEventListener('DOMContentLoaded', loadProducts);

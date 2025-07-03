@@ -1,5 +1,7 @@
 import express from 'express';
 import { createStore } from '../utils/productStoreFs.js';
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 const store = createStore();
@@ -25,13 +27,22 @@ router.get('/:id', async (req, res) => {
 });
 
 // ✅ POST add new product
-router.post('/', async (req, res) => {
-  const newProduct = await store.addProduct(req.body);
-  res.status(201).json(newProduct);
+router.post('/', upload.single('image'), async (req, res) => {
+  console.log('Body:', req.body); // name & price
+  console.log('File:', req.file); // the uploaded file info
+
+  const newProduct = {
+    name: req.body.name,
+    price: parseFloat(req.body.price),
+    image: req.file ? req.file.filename : null, // store filename or path
+  };
+
+  const savedProduct = await store.addProduct(newProduct);
+  res.status(201).json(savedProduct);
 });
 
 // ✅ PUT update product
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
   const id = Number(req.params.id);
   const updatedData = { id, ...req.body };
   try {
