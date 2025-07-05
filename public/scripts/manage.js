@@ -215,7 +215,7 @@ async function searchProducts() {
 document.getElementById('search-button')?.addEventListener('click', searchProducts);
 document.getElementById('add-button')?.addEventListener('click', addProduct);
 document.getElementById('update-button')?.addEventListener('click', updateProduct);
-document.getElementById('refresh-products')?.addEventListener('click', loadProducts);
+document.getElementById('refresh-button')?.addEventListener('click', loadProducts);
 document.getElementById('view-button')?.addEventListener('click', handleViewProduct);
 document.getElementById('delete-button')?.addEventListener('click', handleDeleteProduct);
 
