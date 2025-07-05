@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // ✅ POST new
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', checkAdmin, upload.single('image'), async (req, res) => {
   const { name, price } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
   if (!name || !price) {
@@ -39,7 +39,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 });
 
 // ✅ PUT update
-router.put('/:id', upload.single('image'), async (req, res) => {
+router.put('/:id', checkAdmin, upload.single('image'), async (req, res) => {
   const image = req.file ? `/uploads/${req.file.filename}` : null;
   const updated = await update({
     id: req.params.id,
@@ -51,7 +51,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 });
 
 // ✅ DELETE
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkAdmin, async (req, res) => {
   const result = await deleteProduct(req.params.id);
   if (!result) return res.status(404).json({ error: 'Not found' });
   res.json({ message: 'Deleted' });

@@ -6,8 +6,7 @@ const bcrypt = require('bcrypt');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    const user = { username, password, role: username == 'admin' ? 'admin' : 'user' }
-    req.body = user;
+    const { username, password, role = username === 'admin' ? 'admin' : 'user' } = req.body;
 
     if (!username || !password) {
       return res.status(400).json({ error: 'Username and password are required' });

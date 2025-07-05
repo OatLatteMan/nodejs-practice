@@ -59,8 +59,9 @@ app.get('/products', (req, res) => {
 
 app.get('/manage', (req, res, next) => {
   if (!req.session.user) return res.redirect('/auth');
-  next();
-  res.sendFile(path.join(__dirname, 'public', 'manage-products.html'));
+  if (req.session.user) {
+    res.sendFile(path.join(__dirname, 'public', 'manage-products.html'));
+  }
 });
 
 // Backend routes
