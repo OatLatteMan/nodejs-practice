@@ -19,6 +19,7 @@ router.post('/register', async (req, res) => {
 
     // ✅ THIS LINE IS CRUCIAL
     await userStore.addUser({ username, password, role });
+    req.session.user = { username, role }
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
@@ -55,7 +56,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    req.session.user = { username };
+    req.session.user = { username, role };
 
     // ✅ Only set maxAge if rememberMe is checked
     if (rememberMe) {

@@ -26,12 +26,12 @@ async function findUser(username) {
 }
 
 // Add a new user
-async function addUser({ username, password }) {
+async function addUser({ username, password, role }) {
   const users = await loadUsers();
 
   // Hash password before storing
   const hashedPassword = await bcrypt.hash(password, 10);
-  users.push({ username, password: hashedPassword });
+  users.push({ username, password: hashedPassword, role });
 
   await saveUsers(users);
 }
