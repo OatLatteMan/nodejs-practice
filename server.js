@@ -57,7 +57,9 @@ app.get('/products', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'add-product.html'));
 });
 
-app.get('/manage', (req, res) => {
+app.get('/manage', (req, res, next) => {
+  if (!req.session.user) return res.redirect('/auth');
+  next();
   res.sendFile(path.join(__dirname, 'public', 'manage-products.html'));
 });
 

@@ -57,7 +57,11 @@ router.delete('/:id', async (req, res) => {
   res.json({ message: 'Deleted' });
 });
 
-// ✅ Search
-
+function checkAdmin(req, res, next) {
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  next();
+}
 
 export default router;
