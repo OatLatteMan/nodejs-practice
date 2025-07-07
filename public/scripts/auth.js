@@ -60,7 +60,11 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         const result = await res.json();
         if (res.ok) {
             showMessage('Login successful!');
-            window.location.href = "/manage";
+            if (result.role === 'admin') {
+                window.location.href = "/manage-products.html";
+            } else {
+                window.location.href = "/welcome.html";
+            }
             // window.location.href = "/welcome.html";
         } else {
             showMessage(result.error || 'Login failed.', true);
@@ -91,7 +95,11 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         const result = await res.json();
         if (res.ok) {
             showMessage('Registration successful!');
-            window.location.href = "/manage";
+            if (result.role === 'admin') {
+                window.location.href = "/manage-products.html";
+            } else {
+                window.location.href = "/welcome.html";
+            }
             // window.location.href = "/welcome.html";
         } else {
             showMessage(result.error || 'Registration failed.', true);

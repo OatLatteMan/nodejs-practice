@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     await userStore.addUser({ username, password, role });
     req.session.user = { username, role }
 
-    res.status(201).json({ message: 'User registered successfully' });
+    res.status(201).json({ message: 'User registered successfully', role });
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ error: 'Failed to register user' });
@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
       req.session.cookie.expires = false;
     }
 
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful', role: user.role });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });

@@ -3,5 +3,10 @@
     "username": "admin",
     "password": "$2b$10$gHIedeDdJH7LUUBYEUhzb.x0FV1SSO1OWDZQxZduCXtNmWI6.PPTi",
     "role": "admin"
+  },
+  {
+    "username": "kefir",
+    "password": "$2b$10$mhu71FZ/Kno8dcfhLSFf/ujTwM/szHiQ4xY3bftDjFPcAcfiDEJSO",
+    "role": "user"
   }
 ]
